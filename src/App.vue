@@ -40,6 +40,11 @@ import TopicsChart from './components/TopicsChart'
 
 import processLists from './utils/processLists';
 
+import demoBoards from './demo/boards'
+import demoLists from './demo/lists'
+
+const demo = true;
+
 export default {
   name: 'app',
   components: {
@@ -62,7 +67,11 @@ export default {
   methods: {
     fetchCards: function(boardId) {
       this.loading += 1;
-      Trello.get(
+      if (demo) {
+        this.lists = demoLists;
+        this.loading -= 1;
+      } else {
+        Trello.get(
         `/boards/${boardId}/lists`,
         {
           // TODO: raffinate fields requested
@@ -76,6 +85,7 @@ export default {
          this.loading -= 1;
         }
       )
+      }
     },
     getBoards: function () {
       Trello.get("member/me/boards", (result) => {
@@ -86,7 +96,11 @@ export default {
     },
     authenticate: function() {
       this.loading += 1;
-      Trello.authorize({
+      if (demo) {
+        this.boards = demoBoards.map(({ id, name, closed }) => ({ id, name, closed }));
+        this.loading -= 1;
+      } else {
+        Trello.authorize({
         name: "Trello Dashboard",
         type: "popup",
         scope: { read: 'true' },
@@ -94,6 +108,7 @@ export default {
         success: this.getBoards,
         error: (err) => console.error(err),
       })
+      }
     }
   },
   watch: {
@@ -101,6 +116,8 @@ export default {
     lists: function (lists) { 
       this.loading += 1;
       this.analysis = processLists(lists);
+      console.log(JSON.stringify(this.analysis, null, 2));
+      
       this.loading -= 1;
     }
   },
