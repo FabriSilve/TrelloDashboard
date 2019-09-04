@@ -24,22 +24,29 @@
           {{data.name}} - {{data.cards}}
         </li>
       </ul>
+      <TrendChart />
+      <DayChart />
+      <SprintChart />
+      <TopicsChart />
     </section>
   </section>
 </template>
 
 <script>
-// TODO: unisntall
-// import axios from 'axios'
-
-import FirstChart from './components/FirstChart'
+import TrendChart from './components/TrendChart'
+import DayChart from './components/DayChart'
+import SprintChart from './components/SprintChart'
+import TopicsChart from './components/TopicsChart'
 
 import processLists from './utils/processLists';
 
 export default {
   name: 'app',
   components: {
-    FirstChart,
+    TrendChart,
+    DayChart,
+    SprintChart,
+    TopicsChart,
   },
   data () {
     return {
@@ -50,6 +57,7 @@ export default {
       analysis: {},
     }
   },
+  // TODO: ask autentication with button instead
   mounted: function() { this.authenticate(); },
   methods: {
     fetchCards: function(boardId) {
@@ -57,6 +65,7 @@ export default {
       Trello.get(
         `/boards/${boardId}/lists`,
         {
+          // TODO: raffinate fields requested
           cards: 'open',
           card_fields: 'all',
           filter: 'open',
@@ -70,6 +79,7 @@ export default {
     },
     getBoards: function () {
       Trello.get("member/me/boards", (result) => {
+        // console.log(JSON.stringify(result, null, 2))
         this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
         this.loading -= 1;
       })
