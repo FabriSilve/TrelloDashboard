@@ -24,10 +24,10 @@
           {{data.name}} - {{data.cards}}
         </li>
       </ul>
-      <TrendChart />
-      <DayChart />
+      <TrendChart :series="analysis.trend"/>
+      <!-- <DayChart />
       <SprintChart />
-      <TopicsChart />
+      <TopicsChart /> -->
     </section>
   </section>
 </template>
@@ -43,7 +43,7 @@ import processLists from './utils/processLists';
 import demoBoards from './demo/boards'
 import demoLists from './demo/lists'
 
-const demo = true;
+// const demo = true;
 
 export default {
   name: 'app',
@@ -55,6 +55,7 @@ export default {
   },
   data () {
     return {
+      demo: true,
       loading: 0,
       boards: [],
       boardSelected: '',
@@ -67,18 +68,17 @@ export default {
   methods: {
     fetchCards: function(boardId) {
       this.loading += 1;
-      if (demo) {
+      if (this.demo) {
         this.lists = demoLists;
         this.loading -= 1;
       } else {
         Trello.get(
         `/boards/${boardId}/lists`,
         {
-          // TODO: raffinate fields requested
           cards: 'open',
-          card_fields: 'all',
+          card_fields: 'dateLastActivity,name,shortUrl,labels',
           filter: 'open',
-          fields: 'all',
+          fields: 'cards,name',
         },
         (list) => {
          this.lists = list;
@@ -89,14 +89,13 @@ export default {
     },
     getBoards: function () {
       Trello.get("member/me/boards", (result) => {
-        // console.log(JSON.stringify(result, null, 2))
         this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
         this.loading -= 1;
       })
     },
     authenticate: function() {
       this.loading += 1;
-      if (demo) {
+      if (this.demo) {
         this.boards = demoBoards.map(({ id, name, closed }) => ({ id, name, closed }));
         this.loading -= 1;
       } else {

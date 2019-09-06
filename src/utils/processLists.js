@@ -35,7 +35,34 @@ function processLists(lists) {
       },
     },
   );
-  return result.trend.points;
+  const chartData = Object.keys(result.trend.points).map((day) => ([
+    day,
+    result.trend.points[day],
+  ]))
+  const chartMedia = chartData
+    .sort((a, b) => (moment(a[0]).isSameOrAfter(b[0])))
+    .map((point, index) => {
+    const values = [];
+    for (let j = index - 1; j >=0; j -= 1) {
+      values.push(chartData[j][1])
+    }
+    const averange = values.length
+      ? Math.ceil(values.reduce((previous, current) => current += previous) / values.length)
+      : point[1];
+    return [point[0], averange]
+  })
+
+  return {
+    trend: [{
+      name: 'Points',
+      type: 'area',
+      data: chartData,
+    }, {
+      name: 'Media',
+      type: 'line',
+      data: chartMedia,
+    }]
+  };
 }
 
 export default processLists;
