@@ -115,7 +115,7 @@ export default {
     lists: function (lists) { 
       this.loading += 1;
       this.analysis = processLists(lists);
-      console.log(JSON.stringify(this.analysis, null, 2));
+      // console.log(JSON.stringify(this.analysis, null, 2));
       
       this.loading -= 1;
     }
