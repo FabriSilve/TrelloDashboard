@@ -1,32 +1,24 @@
 <template>
-  <nav role='navigation'>
-    <button @click="display">
-      {{show ? 'close' : 'menu'}}
+  <div id="menu" v-if="show">
+    <p>settings</p>
+    <button v-if="!auth" @click="authenticateWithTrello">
+      authenticate with trello
     </button>
-    <div v-if="show" id="menu">
-      <p>settings</p>
-      <button v-if="!auth" @click="authenticateWithTrello">
-        authenticate with trello
-      </button>
-      <select
-        v-if="boards.length > 0"
-        v-model="board"
-      >
-        <option value="" disabled selected>Select the board</option>
-        <option
-          v-for="board in boards"
-          :value="board"
-          :key="board.id"
-          :disabled="board.closed"
-          >
-        {{ board.name }}
-        </option>
-      </select>
-      <button @click="display">
-        {{show ? 'close' : 'menu'}}
-      </button>
-    </div>
-  </nav>
+    <select
+      v-if="boards.length > 0"
+      v-model="board"
+    >
+      <option value="" disabled selected>Select the board</option>
+      <option
+        v-for="board in boards"
+        :value="board"
+        :key="board.id"
+        :disabled="board.closed"
+        >
+      {{ board.name }}
+      </option>
+    </select>
+  </div>
 </template>
 
 <script>
@@ -35,18 +27,19 @@ const processLists = (lists, callback) => callback(lists);
 
 export default {
   name: 'Menu',
+  props: ['show'],
   data () {
     return {
       auth: false,
-      show: false,
       boards: [],
       board: '',
     }
   },
+  mounted: function() {
+    console.log(this.show);
+    
+  },
   methods: {
-    display: function() {
-      this.show = !this.show;
-    },
     authenticateWithTrello: function() {
       this.$store.commit('loadingStart')
       Trello.authorize({
@@ -82,7 +75,6 @@ export default {
           
          this.lists = lists;
          this.$store.commit('loadingEnd')
-         this.show = false;
          processLists(lists, this.saveAnalysis);
         }
       )

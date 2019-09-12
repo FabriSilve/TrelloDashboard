@@ -1,6 +1,5 @@
 <template>
-  <!-- <section id="loader" v-if="$store.getters.loading">  -->
-  <section id="fog"> 
+  <section id="fog" v-if="$store.getters.loading"> 
     <div class="loader">
       <div />
       <div />
@@ -48,23 +47,23 @@ export default {
   margin: 0 3px;
   width: 13px;
   background: #fff;
-  animation: loader 1.2s cubic-bezier(0, 0.5, 0.5, 1) infinite;
+  animation: loader 1.5s infinite;
 }
 .loader div:nth-child(1) {
   left: 6px;
-  animation-delay: -0.40s;
+  animation-delay: -0.80s;
 }
 .loader div:nth-child(2) {
   left: 26px;
-  animation-delay: -0.30s;
+  animation-delay: -0.60s;
 }
 .loader div:nth-child(3) {
   left: 45px;
-  animation-delay: -0.20s;
+  animation-delay: -0.40s;
 }
 .loader div:nth-child(4) {
   left: 45px;
-  animation-delay: -0.10s;
+  animation-delay: -0.20s;
 }
 .loader div:nth-child(5) {
   left: 45px;

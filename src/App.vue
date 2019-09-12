@@ -1,24 +1,37 @@
 <template>
-  <Page>
-    <Card :size="6">Chart 1</Card>
-    <Card :size="3">Chart 2</Card>
-    <Card :size="3">Chart 3</Card>
-    <Card :size="3">Chart 4</Card>
-    <Card :size="3">Chart 5</Card>
-  </Page>
+  <section id="page">
+    <Header />
+    <Dashboard />
+    <Footer />
+    <Loader />
+  </section>
 </template>
 
 <script>
-import Menu from './components/layout/Menu';
-import Page from './components/layout/Page';
+import Header from './components/logic/Header';
+import Footer from './components/logic/Footer';
+import Loader from './components/logic/Loader';
 import Card from './components/logic/Card';
+
+import Dashboard from './components/layout/Dashboard';
 
 export default {
   name: 'App',
   components: {
-    Menu,
-    Page,
-    Card,
+    Header,
+    Footer,
+    Loader,
+    Dashboard,
   },
 }
 </script>
+
+<style scoped>
+#page {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+</style>
