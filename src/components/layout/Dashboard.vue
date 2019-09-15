@@ -1,7 +1,7 @@
 <template>
   <section id="dashboard">
-    <div class="card">Chart 1</div>
-    <div class="card">Chart 2</div>
+    <div class="card"><TrendChart /></div>
+    <div class="card"><DayChart /></div>
     <div class="card">Chart 3</div>
     <div class="card">Chart 4</div>
     <div class="card">Chart 5</div>
@@ -9,31 +9,39 @@
 </template>
 
 <script>
+import TrendChart from '../charts/TrendChart';
+import DayChart from '../charts/DayChart';
+
 export default {
   name: 'dashboard',
+  components: {
+    TrendChart,
+    DayChart,
+  }
 }
 </script>
 
 <style scoped>
 #dashboard {
-  margin: 1rem;
+  margin: 0 2%;
   display: flex;
-  width: calc(100% - 2rem);
+  width: 96%;
+  height: 100%;
   flex-flow: row wrap;
   align-items: stretch;
   justify-content: space-between;
 }
 
 .card {
-  width: 30%;
-  height: 35vh;
-  margin: 0.5rem 0;
+  width: 32%;
+  height: 47%;
+  margin: 1% 0;
   background: #efefef;
   border-radius: 0.5rem;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
 .card:first-child {
-  width: 65%;
+  width: 66%;
 }
 </style>

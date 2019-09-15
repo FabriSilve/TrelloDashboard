@@ -45,7 +45,9 @@ export default {
 <style scoped>
 #header {
   padding: 0.5rem 1rem;
-  background-color: #efefef;
+  background-image: linear-gradient(to bottom, rgb(106, 106, 216),  white);
+  color: white;
+  font-weight: bold;
   display: flex;
   flex-direction: row;
   align-items: center;

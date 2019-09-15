@@ -1,6 +1,6 @@
 <template>
   <section id="footer">
-    This footer will always be positioned at the bottom of the page, but <strong>not fixed</strong>
+    <p class="link">Developed by <a href="https://github.com/FabriSilve" target="_blank">FabriSilve</a></p>
   </section>
 </template>
 
@@ -12,14 +12,17 @@ export default {
 
 <style scoped>
 #footer {
-  padding: 1rem;
-  background-color: #efefef;
+  color: white;
   text-align: center;
-  max-height: 2rem;
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: space-between;
-  z-index: 2;
+  justify-content: center;
+}
+
+.link {
+  height: 1rem;
+  padding: 0.5rem;
+  margin: 0;
 }
 </style>

@@ -22,6 +22,7 @@ const store = new Vuex.Store({
   getters: {
     loading: state => state.loading,
     analysis: state => state.analysis,
+    trendSeries: state => state.analysis.trendSeries,
   }
 })
 
