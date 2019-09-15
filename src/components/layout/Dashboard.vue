@@ -4,7 +4,7 @@
     <div class="card"><DayChart /></div>
     <div class="card"><SprintChart /></div>
     <div class="card"><TopicsChart /></div>
-    <div class="card">Chart 5</div>
+    <div class="card"><WarningTable /></div>
   </section>
 </template>
 
@@ -14,6 +14,8 @@ import DayChart from '../charts/DayChart';
 import TopicsChart from '../charts/TopicsChart';
 import SprintChart from '../charts/SprintChart';
 
+import WarningTable from '../charts/WarningTable';
+
 export default {
   name: 'dashboard',
   components: {
@@ -21,6 +23,7 @@ export default {
     DayChart,
     TopicsChart,
     SprintChart,
+    WarningTable,
   }
 }
 </script>
@@ -42,6 +45,9 @@ export default {
   margin: 1% 0;
   background: #f3f3f3;
   border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 

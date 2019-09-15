@@ -20,6 +20,7 @@ function processLists(lists) {
         const cardCleanedName = cleanCardName(card.name);
         if (!cardPoints || !cardCleanedName) return validCards;
         const formattedCard = {
+          id: card._id,
           list: list.name,
           points: cardPoints,
           name: cardCleanedName,
