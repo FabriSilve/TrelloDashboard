@@ -63,7 +63,15 @@ const analysis = {
       ['10/01/2003',36],
       ['11/01/2003',39],
     ],
-  }]
+  }],
+  daySeries: [6, 67, 61, 90],
+  topicsSeries: [{
+    name: 'Topics',
+    data: [80, 50, 30, 40, 100, 20],
+  }],
+  sprintSeries: [{
+    data: [400, 430, 448, 470, 540, 580, 690, 1100, 1200, 1380]
+  }],
 };
 
 export default analysis;
