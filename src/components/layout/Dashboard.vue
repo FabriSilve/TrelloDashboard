@@ -2,8 +2,8 @@
   <section id="dashboard">
     <div class="card"><TrendChart /></div>
     <div class="card"><DayChart /></div>
-    <div class="card">Chart 3</div>
-    <div class="card">Chart 4</div>
+    <div class="card"><SprintChart /></div>
+    <div class="card"><TopicsChart /></div>
     <div class="card">Chart 5</div>
   </section>
 </template>
@@ -11,12 +11,16 @@
 <script>
 import TrendChart from '../charts/TrendChart';
 import DayChart from '../charts/DayChart';
+import SprintChart from '../charts/SprintChart';
+import TopicsChart from '../charts/TopicsChart';
 
 export default {
   name: 'dashboard',
   components: {
     TrendChart,
     DayChart,
+    SprintChart,
+    TopicsChart,
   }
 }
 </script>
