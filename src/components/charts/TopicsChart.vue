@@ -1,6 +1,11 @@
 <template>
   <div v-if="$store.getters.topicsSeries">
-    <apexchart type="radar" height="300" :options="chartOptions" :series="$store.getters.topicsSeries" />
+    <apexchart
+      type="radar"
+      height="200"
+      :options="{ ...chartOptions, labels: $store.getters.topicsLabels }"
+      :series="$store.getters.topicsSeries"
+    />
   </div>
 </template>
 
@@ -9,8 +14,32 @@ export default {
   data() {
     return {
       chartOptions: {
-        labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-      }
+        chart: {
+          // width: '100%',
+          // height: '300',
+          dropShadow: {
+            enabled: true,
+            blur: 1,
+            left: 1,
+            top: 1
+          },
+        },
+        title: {
+            text: 'Sprint Topics'
+        },
+        stroke: {
+            width: 0
+        },
+        fill: {
+            opacity: 0.4
+        },
+        markers: {
+            size: 0
+        },
+        // labels: store.getters.topicsLabels,
+      },
+      // series: [23, 11, 54, 72, 12],
+      // labels: ["Apple", "Mango", "Banana", "Papaya", "Orange"]
     }
   }
 }

@@ -1,6 +1,6 @@
 <template>
   <section v-if="$store.getters.daySeries">
-    <apexchart type=radialBar height="300" :options="chartOptions" :series="$store.getters.daySeries"/>
+    <apexchart type=radialBar height="100%" :options="chartOptions" :series="$store.getters.daySeries"/>
   </section>
 </template>
 

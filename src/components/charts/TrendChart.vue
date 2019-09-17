@@ -1,75 +1,79 @@
 <template>
-  <section v-if="$store.getters.trendSeries">
-    <apexchart height="300" type="line" :options="chartOptions" :series="$store.getters.trendSeries"/>
-  </section>
+  <div class="fill" v-if="$store.getters.trendSeries">
+    <apexchart 
+      height="100%"
+      :options="chartOptions" 
+      :series="$store.getters.trendSeries"
+    />
+  </div>
 </template>
 
 <script>
+import colours from '../../constants/colours';
+
 export default {
   data() {
     return {
       chartOptions: {
         stroke: {
-          width: [4, 2, 0, 0],
+          width: [1, 2, 2],
           curve: 'smooth'
         },
         plotOptions: {
           bar: {
             horizontal: false,
-            columnWidth: '25%',
-            endingShape: 'rounded'	
-          }
+            columnWidth: '10%',
+            endingShape: 'rounded',	
+          },
         },
-        colors: ['#E14A84', '#A5C351', '#3A5794'],
-        fill: {
-          opacity: [0.25, 0.85, 0.85,1],
-            gradient: {
-              inverseColors: false,
-              shade: 'light',
-              type: "vertical",
-              opacityFrom: 0.85,
-              opacityTo: 0.55,
-              stops: [0, 100, 100, 100]
-            }
-        },
+        colors: [
+          colours.ORANGE,
+          colours.PURPLE,
+          colours.RED,
+        ],
+        fill: { opacity: [0.8, 0.4,1] },
         markers: {
           size: 0
         },
         xaxis: {
           type:'datetime',
+          forceNiceScale: true,
           tickAmount: 1,
           labels: {
+            show: false,
             style: {
-              colors: 'rgba(100, 0, 0, 0.5)',
+              colors: colours.BLUE,
               fontSize: '10px',
             }
           },
           axisBorder: {
             show: false,
-        },
-        axisTicks: {
-            show: true,
-            borderType: 'solid',
-            color: 'gray',
-            height: 2,
-            offsetX: 0,
-            offsetY: 0
-        },
+          },
+          // title: { text: 'days'},
+          axisTicks: {
+              show: false,
+              borderType: 'solid',
+              color: 'gray',
+              height: 4,
+              offsetX: 0,
+              offsetY: 0
+          },
         },
         yaxis: {
           min: 0,
-          tickAmount: 5,
+          opposite: true,
+          forceNiceScale: true,
           labels: {
+            show: false,
             style: {
-              color: 'rgba(100, 0, 0, 0.5)',
+              color: colours.BLUE,
             }
-          }
+          },
         },
         chart: {
-          toolbar: {
-            show: false,
-          },
+          type: 'line',
           width: '100%',
+          toolbar: { show: false },
           background: 'transparent',
         },
         grid: {
@@ -87,29 +91,25 @@ export default {
           },
         },
         legend: {
+          position: 'top',
           labels: {
             useSeriesColors: true
           },
-          itemMargin: {
-            horizontal: 30,
-            vertical: 10,
+          onItemHover: {
+            highlightDataSeries: true
           },
-          markers: {
-            customHTML: [
-              function() {
-                return ''
-              }, function() {
-                return ''
-              }, function() {
-                return ''
-              }, function() {
-                return ''
-              }
-            ]
-          }
+           onItemClick: {
+            toggleDataSeries: false
+          },
         }
       },
     };
   }
 }
 </script>
+
+<style scoped>
+.fill {
+  display: flex;
+}
+</style>
