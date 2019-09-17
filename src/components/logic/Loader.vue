@@ -17,7 +17,7 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
 #fog {
   position: fixed;
   width: 100%;

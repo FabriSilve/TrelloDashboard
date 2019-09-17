@@ -2,21 +2,28 @@
   <section id="dashboard">
     <div class="card"><TrendChart /></div>
     <div class="card"><DayChart /></div>
-    <div class="card">Chart 3</div>
-    <div class="card">Chart 4</div>
-    <div class="card">Chart 5</div>
+    <div class="card"><SprintChart /></div>
+    <div class="card"><TopicsChart /></div>
+    <div class="card"><WarningTable /></div>
   </section>
 </template>
 
 <script>
 import TrendChart from '../charts/TrendChart';
 import DayChart from '../charts/DayChart';
+import TopicsChart from '../charts/TopicsChart';
+import SprintChart from '../charts/SprintChart';
+
+import WarningTable from '../charts/WarningTable';
 
 export default {
   name: 'dashboard',
   components: {
     TrendChart,
     DayChart,
+    TopicsChart,
+    SprintChart,
+    WarningTable,
   }
 }
 </script>
@@ -34,10 +41,13 @@ export default {
 
 .card {
   width: 32%;
-  height: 47%;
+  height: 45%;
   margin: 1% 0;
-  background: #efefef;
+  background: #f3f3f3;
   border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
 }
 
