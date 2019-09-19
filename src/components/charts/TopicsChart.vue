@@ -15,8 +15,6 @@ export default {
     return {
       chartOptions: {
         chart: {
-          // width: '100%',
-          // height: '300',
           dropShadow: {
             enabled: true,
             blur: 1,
@@ -36,7 +34,6 @@ export default {
         markers: {
             size: 0
         },
-        // labels: store.getters.topicsLabels,
       },
       // series: [23, 11, 54, 72, 12],
       // labels: ["Apple", "Mango", "Banana", "Papaya", "Orange"]
