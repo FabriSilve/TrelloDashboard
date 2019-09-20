@@ -1,4 +1,8 @@
 const sprintOptions = {
+  title: {
+    text: 'Sprint Flow',
+    align: 'center',
+  },
   plotOptions: {
     bar: {
       horizontal: true,

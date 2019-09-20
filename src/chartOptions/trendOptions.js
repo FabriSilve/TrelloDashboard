@@ -1,12 +1,6 @@
 import colours from '../constants/colours';
 
 const trendOptions = {
-    stroke: {
-        width: [
-            1, 2, 2
-        ],
-        curve: 'smooth'
-    },
     plotOptions: {
         bar: {
             horizontal: false,
@@ -15,26 +9,25 @@ const trendOptions = {
         }
     },
     fill: {
-        opacity: [0.8, 0.4, 1]
+        opacity: [1, 0.4, 1]
     },
     markers: {
         size: 0
+    },
+    title: {
+        text: 'Team\'s Trend',
+        align: 'center',
     },
     xaxis: {
         type: 'datetime',
         forceNiceScale: true,
         tickAmount: 1,
         labels: {
-            show: false,
-            style: {
-                colors: colours.BLUE,
-                fontSize: '10px'
-            }
+            show: true,
         },
         axisBorder: {
             show: false
         },
-        title: { text: 'Team\'s Trend'},
         axisTicks: {
             show: false,
             borderType: 'solid',
@@ -49,10 +42,7 @@ const trendOptions = {
         opposite: true,
         forceNiceScale: true,
         labels: {
-            show: false,
-            style: {
-                color: colours.BLUE
-            }
+            show: true,
         }
     },
     chart: {
@@ -60,7 +50,7 @@ const trendOptions = {
         background: 'transparent'
     },
     legend: {
-        position: 'top',
+        position: 'bottom',
         labels: {
             useSeriesColors: true
         },

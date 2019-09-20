@@ -20,7 +20,8 @@ window.Apex = {
     },
   },
   stroke: {
-    width: 3
+    width: 3,
+    curve: 'smooth'
   },
   dataLabels: {
     enabled: false

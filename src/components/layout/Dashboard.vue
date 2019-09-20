@@ -4,21 +4,63 @@
       <div class="row mt-4">
         <div class="col-md-8">
           <div class="box shadow mt-2">
-            <apexchart 
+            <apexchart
             v-if="$store.getters.trendSeries"
-            height="350"
-            :options="trendOptions" 
+            height="430"
+            :options="trendOptions"
             :series="$store.getters.trendSeries"
           />
           </div>
         </div>
         <div class="col-md-4">
           <div class="box shadow mt-2">
+            <!-- <div class="container">
+              <div class="row">
+                <div class="col-md-6">
+                  <apexchart
+                    v-if="$store.getters.daySeries"
+                    height="300"
+                    type=radialBar
+                    :options="{ ...dayOptions, labels: $store.getters.topicsLabels }"
+                    :series="$store.getters.daySeries"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <apexchart
+                    v-if="$store.getters.daySeries"
+                    height="300"
+                    type=radialBar
+                    :options="{ ...dayOptions, labels: $store.getters.topicsLabels }"
+                    :series="$store.getters.daySeries"
+                  />
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-md-6">
+                  <apexchart
+                    v-if="$store.getters.daySeries"
+                    height="300"
+                    type=radialBar
+                    :options="{ ...dayOptions, labels: $store.getters.topicsLabels }"
+                    :series="$store.getters.daySeries"
+                  />
+                </div>
+                <div class="col-md-6">
+                  <apexchart
+                    v-if="$store.getters.daySeries"
+                    height="300"
+                    type=radialBar
+                    :options="{ ...dayOptions, labels: $store.getters.topicsLabels }"
+                    :series="$store.getters.daySeries"
+                  />
+                </div>
+              </div>
+            </div> -->
             <apexchart
               v-if="$store.getters.daySeries"
+              height="530"
               type=radialBar
-              height="350"
-              :options="dayOptions"
+              :options="{ ...dayOptions, labels: $store.getters.dayLabels }"
               :series="$store.getters.daySeries"
             />
           </div>
@@ -27,10 +69,10 @@
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="box shadow">
-            <apexchart 
+            <apexchart
               v-if="$store.getters.sprintSeries"
               type=bar
-              height="350"
+              height="430"
               :options="sprintOptions"
               :series="$store.getters.sprintSeries"
             />
@@ -38,11 +80,11 @@
         </div>
         <div class="col-md-4">
           <div class="box shadow">
-            <apexchart 
+            <apexchart
               v-if="$store.getters.topicsSeries"
               type="radar"
-              height="350"
-              :options="topicsOptions" 
+              height="430"
+              :options="{ ...topicsOptions, labels: $store.getters.topicsLabels }"
               :series="$store.getters.topicsSeries"
             />
           </div>
@@ -93,7 +135,7 @@ export default {
   max-width: 2500px;
   width: 100%;
   margin: 0 auto;
-/* 
+/*
   display: flex;
   height: 100%;
   flex-flow: row wrap;

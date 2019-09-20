@@ -1,125 +1,90 @@
-// const dayOptions = {
-//   plotOptions: {
-//     radialBar: {
-//       offsetY: -10,
-//         startAngle: 0,
-//           endAngle: 270,
-//             hollow: {
-//         margin: 5,
-//           size: '30%',
-//             background: 'transparent',
-//               image: undefined,
-//             },
-//       dataLabels: {
-//         name: {
-//           show: false,
-//               },
-//         value: {
-//           show: false,
-//               }
-//       }
-//     }
-//   },
-//   colors: ['#1ab7ea', '#0084ff', '#39539E', '#0077B5'],
-//     labels: ['Vimeo', 'Messenger', 'Facebook', 'LinkedIn'],
-//       legend: {
-//     show: true,
-//       floating: true,
-//         fontSize: '16px',
-//           position: 'left',
-//             offsetX: 30,
-//               offsetY: 10,
-//                 labels: {
-//       useSeriesColors: true,
-//           },
-//     markers: {
-//       size: 0
-//     },
-//     formatter: function(seriesName, opts) {
-//       return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
-//     },
-//     itemMargin: {
-//       horizontal: 1,
-//           }
-//   },
-//   // responsive: [{
-//   //   breakpoint: 480,
-//   //   options: {
-//   //     legend: {
-//   //       show: false
-//   //     }
-//   //   }
-//   // }]
-// }
-
 const dayOptions = {
-  chart: {
-  },
   plotOptions: {
     radialBar: {
+      offsetY: 0,
       startAngle: 0,
-      endAngle: 365,
+      endAngle: 270,
       hollow: {
-        margin: 0,
-        size: '40%',
-        background: '#fff',
-        position: 'front',
-        dropShadow: {
-          enabled: true,
-          top: 3,
-          left: 0,
-          blur: 4,
-          opacity: 0.24
-        }
-      },
-      track: {
-        background: '#fff',
-        strokeWidth: '87%',
-        margin: 0, // margin is in pixels
-        dropShadow: {
-          enabled: true,
-          top: -3,
-          left: 0,
-          blur: 4,
-          opacity: 0.35
-        }
-      },
-
+        margin: 5,
+        size: '55%',
+            background: 'transparent',
+              image: undefined,
+            },
       dataLabels: {
         name: {
-          offsetY: -10,
-          show: true,
-          color: '#888',
-          fontSize: '17px'
-        },
+          show: false,
+              },
         value: {
-          formatter: function (val) {
-            return parseInt(val);
-          },
-          color: '#111',
-          fontSize: '36px',
-          show: true,
-        }
+          show: false,
+              }
       }
     }
   },
-  fill: {
-    type: 'gradient',
-    gradient: {
-      shade: 'dark',
-      type: 'horizontal',
-      shadeIntensity: 0.5,
-      gradientToColors: ['#ABE5A1'],
-      gradientFromColors: ['#DDBBDD'],
-      inverseColors: true,
-      opacityFrom: 1,
-      opacityTo: 1,
-      stops: [0, 200]
+  title: {
+    text: 'Today Progress',
+    align: 'center',
+  },
+  legend: {
+    show: true,
+    floating: true,
+    fontSize: '24px',
+    position: 'left',
+    offsetX: 10,
+    offsetY: 110,
+    labels: {
+      useSeriesColors: true,
+    },
+    markers: {
+      size: 0
+    },
+    formatter: function(seriesName, opts) {
+      return seriesName + ":  " + opts.w.globals.series[opts.seriesIndex]
+    },
+    itemMargin: {
+      horizontal: 1,
     }
   },
-  stroke: {
-    lineCap: 'round'
-  },
 }
+
+// const dayOptions = {
+//   chart: {
+//     type: 'radialBar',
+//   },
+//   plotOptions: {
+//     radialBar: {
+//       startAngle: -140,
+//       endAngle: 140,
+//       dataLabels: {
+//         name: {
+//           fontSize: '16px',
+//           color: undefined,
+//           offsetY: 60
+//         },
+//         value: {
+//           offsetY: -10,
+//           fontSize: '22px',
+//           color: undefined,
+//           formatter: function (val) {
+//             return val + "%";
+//           }
+//         }
+//       }
+//     }
+//   },
+//   fill: {
+//     type: 'gradient',
+//     gradient: {
+//       shade: 'dark',
+//       shadeIntensity: 0.5,
+//       inverseColors: false,
+//       opacityFrom: 1,
+//       opacityTo: 1,
+//       stops: [0, 50, 65, 91]
+//     },
+//   },
+//   stroke: {
+//     dashArray: 2
+//   },
+// }
 
 export default dayOptions;
