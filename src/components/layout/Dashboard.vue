@@ -48,7 +48,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="box shadow">
+          <div class="box">
             <WarningTable />
           </div>
         </div>
@@ -93,22 +93,11 @@ export default {
   max-width: 2500px;
   width: 100%;
   margin: 0 auto;
-/*
-  display: flex;
-  height: 100%;
-  flex-flow: row wrap;
-  align-items: stretch;
-  justify-content: space-between; */
 }
 
 .box {
-  /* max-height: 500px; */
   height: 100%;
   background-color: #2B2D3E;
-  padding: 1rem 1rem;
-  /* width: 32%;
-  margin: 1% 0;
-  display: flex;
-  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24); */
+  padding: 5px 0;
 }
 </style>
