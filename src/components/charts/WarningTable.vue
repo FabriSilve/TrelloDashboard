@@ -65,7 +65,7 @@ export default {
   margin: 0.5rem auto;
   padding: 0.5rem;
   width: 90%;
-  border: red solid 1px;
+  border: orange solid 1px;
   background-color: #374462;
 }
 
