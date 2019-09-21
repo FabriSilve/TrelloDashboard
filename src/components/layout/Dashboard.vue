@@ -14,48 +14,6 @@
         </div>
         <div class="col-md-4">
           <div class="box shadow mt-2">
-            <!-- <div class="container">
-              <div class="row">
-                <div class="col-md-6">
-                  <apexchart
-                    v-if="$store.getters.daySeries"
-                    height="300"
-                    type=radialBar
-                    :options="{ ...dayOptions, labels: $store.getters.topicsLabels }"
-                    :series="$store.getters.daySeries"
-                  />
-                </div>
-                <div class="col-md-6">
-                  <apexchart
-                    v-if="$store.getters.daySeries"
-                    height="300"
-                    type=radialBar
-                    :options="{ ...dayOptions, labels: $store.getters.topicsLabels }"
-                    :series="$store.getters.daySeries"
-                  />
-                </div>
-              </div>
-              <div class="row">
-                <div class="col-md-6">
-                  <apexchart
-                    v-if="$store.getters.daySeries"
-                    height="300"
-                    type=radialBar
-                    :options="{ ...dayOptions, labels: $store.getters.topicsLabels }"
-                    :series="$store.getters.daySeries"
-                  />
-                </div>
-                <div class="col-md-6">
-                  <apexchart
-                    v-if="$store.getters.daySeries"
-                    height="300"
-                    type=radialBar
-                    :options="{ ...dayOptions, labels: $store.getters.topicsLabels }"
-                    :series="$store.getters.daySeries"
-                  />
-                </div>
-              </div>
-            </div> -->
             <apexchart
               v-if="$store.getters.daySeries"
               height="530"

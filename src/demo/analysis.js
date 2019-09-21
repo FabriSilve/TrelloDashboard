@@ -48,8 +48,8 @@ const analysis = {
       ['11/01/2003', 30]
     ],
   }],
-  daySeries: [90, 80, 70],
-  dayLabels: ['AAAAA', 'BBBBBB', 'CCCCCC'],
+  daySeries: [90],
+  dayLabels: ['AAAAA'],
   topicsSeries: [{
     data: [80, 50, 30, 40, 100, 20],
   }],

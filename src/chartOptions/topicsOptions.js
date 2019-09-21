@@ -20,7 +20,9 @@ const topicsOptions = {
     align: 'center',
   },
   xaxis: {
-    labels: { show: true },
+    labels: {
+      show: false,
+    },
   },
   yaxis: {
     show: false,
@@ -36,15 +38,10 @@ const topicsOptions = {
   },
   dataLabels: {
     enabled: true,
-    enabledOnSeries: true,
-    formatter: function (val, opts) {
-      return val
-    },
     textAnchor: 'middle',
-    offsetX: 100,
     offsetY: 100,
     style: {
-      fontSize: '12px',
+      fontSize: '16px',
       colors: undefined
     },
     dropShadow: {

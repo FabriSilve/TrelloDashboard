@@ -40,7 +40,7 @@ const trendOptions = {
     yaxis: {
         min: 0,
         opposite: true,
-        forceNiceScale: true,
+        // forceNiceScale: true,
         labels: {
             show: true,
         }
@@ -50,6 +50,7 @@ const trendOptions = {
         background: 'transparent'
     },
     legend: {
+        fontSize: '18px',
         position: 'bottom',
         labels: {
             useSeriesColors: true
