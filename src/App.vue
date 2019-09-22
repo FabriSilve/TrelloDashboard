@@ -10,7 +10,7 @@
 import Header from './components/logic/Header';
 import Loader from './components/logic/Loader';
 
-import Dashboard from './components/layout/Dashboard';
+import Dashboard from './components/Dashboard';
 
 export default {
   name: 'App',

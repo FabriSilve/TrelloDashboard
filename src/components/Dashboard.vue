@@ -58,16 +58,16 @@
 </template>
 
 <script>
-import trendOptions from '../../chartOptions/trendOptions'
-import dayOptions from '../../chartOptions/dayOptions'
-import sprintOptions from '../../chartOptions/sprintOptions'
-import topicsOptions from '../../chartOptions/topicsOptions'
+import trendOptions from '../chartOptions/trendOptions'
+import dayOptions from '../chartOptions/dayOptions'
+import sprintOptions from '../chartOptions/sprintOptions'
+import topicsOptions from '../chartOptions/topicsOptions'
 
-import DayChart from '../charts/DayChart';
-import TopicsChart from '../charts/TopicsChart';
-import SprintChart from '../charts/SprintChart';
+import DayChart from './charts/DayChart';
+import TopicsChart from './charts/TopicsChart';
+import SprintChart from './charts/SprintChart';
 
-import WarningTable from '../charts/WarningTable';
+import WarningTable from './charts/WarningTable';
 
 export default {
   name: 'dashboard',
