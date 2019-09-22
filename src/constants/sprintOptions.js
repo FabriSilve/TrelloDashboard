@@ -4,13 +4,9 @@ const sprintOptions = {
     align: 'center',
   },
   plotOptions: {
-    bar: {
-      horizontal: true,
-          }
+    bar: { horizontal: true },
   },
-  dataLabels: {
-    enabled: false
-  },
-}
+  dataLabels: { enabled: false },
+};
 
 export default sprintOptions;

@@ -12,30 +12,21 @@ Vue.component("apexchart", VueApexCharts);
 window.Apex = {
   chart: {
     foreColor: '#ccc',
-    toolbar: {
-      show: false
-    },
+    toolbar: { show: false },
   },
   stroke: {
     width: 3,
     curve: 'smooth'
   },
-  dataLabels: {
-    enabled: false
-  },
-  tooltip: {
-    theme: 'dark'
-  },
+  dataLabels: { enabled: false },
+  tooltip: { theme: 'dark' },
   grid: {
     borderColor: "#535A6C",
     xaxis: {
-      lines: {
-        show: true
-      }
-    }
-  }
+      lines: { show: true },
+    },
+  },
 };
-
 
 new Vue({
   render: h => h(App),
