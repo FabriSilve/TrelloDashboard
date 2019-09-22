@@ -1,6 +1,4 @@
 import Vue from 'vue'
-import Vuex from 'vuex'
-
 import VueApexCharts from "vue-apexcharts";
 
 import App from './App'
