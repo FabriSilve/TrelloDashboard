@@ -2,9 +2,9 @@
   <section id="header">
     <span class="menu-item">{{day}}</span>
     <span class="menu-item">{{time}}</span>
+    <Menu :show="show" />
     <span class="menu-item" @click="display">
       {{show ? 'close' : 'menu'}}
-      <Menu :show="show" />
     </span>
   </section>
 </template>

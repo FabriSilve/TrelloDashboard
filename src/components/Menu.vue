@@ -30,7 +30,8 @@ import Footer from './Footer';
 
 import demoAnalysis from '../demo/analysis';
 
-const processLists = (lists, callback) => callback(lists);
+import processLists from '../utils/processLists';
+
 
 export default {
   name: 'Menu',
@@ -65,26 +66,23 @@ export default {
       })
     },
     getCards: function () {
-      this.$store.commit('loadingStart')
+      this.$store.commit('loadingStart');
       Trello.get(
         `/boards/${this.board.id}`,
         {
           cards: 'open',
-          card_fields: 'dateLastActivity,name,shortUrl,labels',
+          card_fields: 'dateLastActivity,name,shortUrl,labels,idList',
           filter: 'open',
           fields: 'cards,name',
           lists: 'open',
           organisation: true,
         },
         (lists) => {
-          console.log(JSON.stringify(lists, null, 2));
-          
-         this.lists = lists;
-         this.$store.commit('loadingEnd')
-         processLists(lists, this.saveAnalysis);
+          this.lists = lists;
+          this.$store.commit('loadingEnd');
+          processLists(lists, this.saveAnalysis);
         }
       )
-
     },
     saveAnalysis: function (analysis) {
       this.$store.commit('updateAnalysis', analysis);

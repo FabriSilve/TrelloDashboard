@@ -15,9 +15,9 @@
         v-for="ticket in $store.getters.warningsTickets"
         :key="ticket.id"
       >
+        <!-- <span class="ticket-day">{{ticket.day}}</span> -->
         <span class="ticket-title">{{ticket.name}}</span>
         <span class="points">{{ticket.points}}</span>
-        
       </div>
       <div
         v-if="$store.getters.warningsTickets.length === 0"
@@ -95,7 +95,8 @@ export default {
 
 .points {
   height: 2rem;
-  width: 2rem;
+  min-width: 2rem;
+  margin: 1rem;
   display: flex;
   align-items: center;
   justify-content: center;
