@@ -7,9 +7,8 @@
 </template>
 
 <script>
-import Header from './components/logic/Header';
-import Loader from './components/logic/Loader';
-
+import Header from './components/Header';
+import Loader from './components/Loader';
 import Dashboard from './components/Dashboard';
 
 export default {

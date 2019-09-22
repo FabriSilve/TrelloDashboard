@@ -28,7 +28,7 @@
 <script>
 import Footer from './Footer';
 
-import demoAnalysis from '../../demo/analysis';
+import demoAnalysis from '../demo/analysis';
 
 const processLists = (lists, callback) => callback(lists);
 

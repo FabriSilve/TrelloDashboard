@@ -58,10 +58,10 @@
 </template>
 
 <script>
-import trendOptions from '../chartOptions/trendOptions'
-import dayOptions from '../chartOptions/dayOptions'
-import sprintOptions from '../chartOptions/sprintOptions'
-import topicsOptions from '../chartOptions/topicsOptions'
+import trendOptions from '../constants/trendOptions'
+import dayOptions from '../constants/dayOptions'
+import sprintOptions from '../constants/sprintOptions'
+import topicsOptions from '../constants/topicsOptions'
 
 import WarningTable from './WarningTable';
 
