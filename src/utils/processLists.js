@@ -45,7 +45,7 @@ function processLists({ lists, cards }, callback) {
     .sort((a, b) => (moment(a.day).isSameOrAfter(b.day)));
 
   const trendPoints = formattedCards
-    .filter(({ list }) => /^done #.*$/i.test(list))
+    .filter(({ list }) => /^done #[0-9]+$/i.test(list))
     .reduce(
       (trendData, card) => {
         if (trendData[card.day]) trendData[card.day] += card.points;
