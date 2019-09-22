@@ -63,18 +63,11 @@ import dayOptions from '../chartOptions/dayOptions'
 import sprintOptions from '../chartOptions/sprintOptions'
 import topicsOptions from '../chartOptions/topicsOptions'
 
-import DayChart from './charts/DayChart';
-import TopicsChart from './charts/TopicsChart';
-import SprintChart from './charts/SprintChart';
-
 import WarningTable from './WarningTable';
 
 export default {
   name: 'dashboard',
   components: {
-    DayChart,
-    TopicsChart,
-    SprintChart,
     WarningTable,
   },
   data() {
