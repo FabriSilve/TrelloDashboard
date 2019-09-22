@@ -67,7 +67,7 @@ import DayChart from './charts/DayChart';
 import TopicsChart from './charts/TopicsChart';
 import SprintChart from './charts/SprintChart';
 
-import WarningTable from './charts/WarningTable';
+import WarningTable from './WarningTable';
 
 export default {
   name: 'dashboard',
