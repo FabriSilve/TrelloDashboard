@@ -30,8 +30,7 @@ export default {
     var self = this;
 
     setInterval(function() {
-      console.log('call')
-        self.time = moment().format('HH:mm'); 
+      self.time = moment().format('HH:mm'); 
     }, 60000);
   },
   methods: {

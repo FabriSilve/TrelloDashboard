@@ -53,7 +53,7 @@ export default {
         name: "Trello Dashboard",
         type: "popup",
         scope: { read: 'true' },
-        expiration: '1hour',
+        expiration: '1day',
         success: this.getBoards,
         error: (err) => console.error(err),
       })
@@ -66,7 +66,6 @@ export default {
       })
     },
     getCards: function () {
-      this.$store.commit('loadingStart');
       Trello.get(
         `/boards/${this.board.id}`,
         {
@@ -79,13 +78,13 @@ export default {
         },
         (lists) => {
           this.lists = lists;
-          this.$store.commit('loadingEnd');
           processLists(lists, this.saveAnalysis);
         }
       )
     },
     saveAnalysis: function (analysis) {
       this.$store.commit('updateAnalysis', analysis);
+      this.$store.commit('loadingEnd');
     },
     useDemo: function() {
       this.$store.commit('updateAnalysis', demoAnalysis);
@@ -93,7 +92,12 @@ export default {
   },
   watch: {
     board: function() {
+      this.$store.commit('loadingStart');
       this.getCards();
+      var self = this;
+      setInterval(function() {
+        self.getCards(); 
+      }, 60000);
     }
   }
 }
