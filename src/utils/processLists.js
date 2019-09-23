@@ -2,14 +2,14 @@ import moment from 'moment';
 
 function getPointsFromName(name) {
   var arr = name.match(/\((.*?)\)/g) || [""];
-  return arr 
+  return arr
     ? parseInt(arr[0].replace( /(^.*\(|\).*$)/g, '' ))
     : 0;
 }
 
 function getDoneNumber(name) {
   var arr = name.match(/[0-9]+/g) || [""];
-  return arr 
+  return arr
     ? parseInt(arr[0].replace( /(^.*\(|\).*$)/g, '' ))
     : 0;
 }
@@ -55,12 +55,12 @@ function processLists({ lists, cards }, callback) {
       },
       {},
     );
-  
+
   const trendPointsData = Object.keys(trendPoints)
     .map((day) => [day, trendPoints[day]])
     .sort((a, b) => (moment(a.day).isSameOrAfter(b.day)));
 
-    
+
   const trendMediaData = trendPointsData.map(
     (point, index) => {
       const values = [];
@@ -75,7 +75,7 @@ function processLists({ lists, cards }, callback) {
       return [point[0], averange];
     }
   ).sort((a, b) => (moment(a.day).isSameOrAfter(b.day)));
-      
+
   const todayDonePoints = formattedCards
     .filter(({ list, day }) => /^done.*$/i.test(list) && moment().isSame(day, 'day'))
     .reduce((tot, card) => tot + card.points, 0)
@@ -104,13 +104,26 @@ function processLists({ lists, cards }, callback) {
       },
       {},
     )
-  
+
   console.log('labels', sprintLabels)
-  
+
   const lastSprintDoneList = lists
     .filter(({ name }) => /^done #.*$/i.test(name))
     .map(({ name }) => ({ name, num: getDoneNumber(name) }))
-    .sort((a, b) => a.num > b.num)[0].name;
+    .sort((a, b) => a.num < b.num)[0].name;
+
+  console.log(
+    lists
+      .filter(({ name }) => /^done #.*$/i.test(name))
+      .map(({ name }) => ({ name, num: getDoneNumber(name) }))
+    )
+
+  console.log(
+    lists
+      .filter(({ name }) => /^done #.*$/i.test(name))
+      .map(({ name }) => ({ name, num: getDoneNumber(name) }))
+      .sort((a, b) => a.num < b.num)[0].name
+    )
 
   const lastSprintDonePoints = formattedCards
     .filter(({ list }) => list === lastSprintDoneList)
