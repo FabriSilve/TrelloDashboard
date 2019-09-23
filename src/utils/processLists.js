@@ -39,26 +39,32 @@ function processLists({ lists, cards }, callback) {
         points: cardPoints,
         name: cardCleanedName,
         labels: card.labels.map(({ name, color }) => ({ name, color })),
-        day: moment(card.dateLastActivity).format('DD/MM/YYYY')
+        day: moment(card.dateLastActivity)
       };
     }, [])
     .sort((a, b) => (moment(a.day).isSameOrAfter(b.day)));
 
   const trendPoints = formattedCards
-    .filter(({ list }) => /^done #[0-9]+$/i.test(list))
+    .filter(({ list, day }) => /^done #[0-9]+$/i.test(list) && moment().subtract(1, 'months').isBefore(day))
     .reduce(
       (trendData, card) => {
-        if (trendData[card.day]) trendData[card.day] += card.points;
-        else trendData[card.day] = card.points;
+        const formattedDay = moment(card.day).format('MM/DD/YYYY');
+        if (trendData[formattedDay]) trendData[formattedDay] += card.points;
+        else trendData[formattedDay] = card.points || 0;
 
         return trendData;
       },
       {},
     );
 
+  console.log(Object.keys(trendPoints))
+
   const trendPointsData = Object.keys(trendPoints)
-    .map((day) => [day, trendPoints[day]])
-    .sort((a, b) => (moment(a.day).isSameOrAfter(b.day)));
+    .sort((a, b) => moment(a, 'MM/DD/YYYY').isSameOrAfter(moment(b, 'MM/DD/YYYY')))
+    .map((list) => [list, trendPoints[list]])
+
+
+  console.log(trendPointsData);
 
 
   const trendMediaData = trendPointsData.map(
@@ -105,25 +111,10 @@ function processLists({ lists, cards }, callback) {
       {},
     )
 
-  console.log('labels', sprintLabels)
-
   const lastSprintDoneList = lists
     .filter(({ name }) => /^done #.*$/i.test(name))
     .map(({ name }) => ({ name, num: getDoneNumber(name) }))
     .sort((a, b) => a.num < b.num)[0].name;
-
-  console.log(
-    lists
-      .filter(({ name }) => /^done #.*$/i.test(name))
-      .map(({ name }) => ({ name, num: getDoneNumber(name) }))
-    )
-
-  console.log(
-    lists
-      .filter(({ name }) => /^done #.*$/i.test(name))
-      .map(({ name }) => ({ name, num: getDoneNumber(name) }))
-      .sort((a, b) => a.num < b.num)[0].name
-    )
 
   const lastSprintDonePoints = formattedCards
     .filter(({ list }) => list === lastSprintDoneList)

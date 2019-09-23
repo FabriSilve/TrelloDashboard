@@ -1,7 +1,7 @@
 <template>
   <section id="dashboard">
     <div class="container-fluid">
-      <!-- <div class="row mt-4">
+      <div class="row mt-4">
         <div class="col-md-8">
           <div class="box shadow mt-2">
             <apexchart
@@ -23,7 +23,7 @@
             />
           </div>
         </div>
-      </div> -->
+      </div>
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="box shadow">
