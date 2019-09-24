@@ -69,8 +69,8 @@ const analysis = {
        x: 'tesfft6', y: 90,
      }],
   }],
-  // warningsTickets: [],
-  warningsTickets: [{
+  // blockedTickets: [],
+  blockedTickets: [{
     id: 1,
     name: 'Test warning',
     points: 13,

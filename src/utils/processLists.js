@@ -84,9 +84,22 @@ function processLists({ lists, cards }, callback) {
   const lastPointsMedia = trendMediaData[trendMediaData.length -1][1];
   const todayData = Math.ceil(todayDonePoints / lastPointsMedia * 100);
 
-  const warningsTicketsData = formattedCards
-    .filter(({ list }) => /^blocked.*$/i.test(list))
-    .map(({ id, name, points, day }) => ({ id, name, points, day }));
+  const blockedTicketsData = formattedCards
+    .filter(({ list }) => list === 'Blocked')
+    .map(({ id, name, points, day }) => ({ id, name, points, day }))
+    .filter(({ name, points }) => !!name && !!points);
+  
+  const toValidateTicketsData = formattedCards
+    .filter(({ list }) => list === 'To Validate')
+    .map(({ id, name, points, day }) => ({ id, name, points, day }))
+    .filter(({ name, points }) => !!name && !!points);
+
+  const doingTicketsData = formattedCards
+    .filter(({ list }) => list === 'Doing')
+    .map(({ id, name, points, day }) => ({ id, name, points, day }))
+    .filter(({ name, points }) => !!name && !!points);
+
+  console.log(doingTicketsData)
 
   const sprintLabels = {};
 
@@ -157,7 +170,9 @@ function processLists({ lists, cards }, callback) {
         x: lastSprintDoneList, y: lastSprintDonePoints,
       }],
     }],
-    warningsTickets: warningsTicketsData,
+    blockedTickets: blockedTicketsData,
+    toValidateTickets: toValidateTicketsData,
+    doingTickets: doingTicketsData,
   });
 }
 

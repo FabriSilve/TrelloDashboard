@@ -28,7 +28,9 @@ const store = new Vuex.Store({
     sprintSeries: state => state.analysis.sprintSeries,
     topicsSeries: state => state.analysis.topicsSeries,
     topicsLabels: state => state.analysis.topicsLabels,
-    warningsTickets: state => state.analysis.warningsTickets,
+    blockedTickets: state => state.analysis.blockedTickets,
+    toValidateTickets: state => state.analysis.toValidateTickets,
+    doingTickets: state => state.analysis.doingTickets,
   }
 })
 

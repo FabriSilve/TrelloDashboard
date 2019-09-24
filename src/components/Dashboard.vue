@@ -49,7 +49,12 @@
         </div>
         <div class="col-md-4">
           <div class="box">
-            <WarningTable />
+            <TicketsTable
+               v-if="$store.getters.blockedTickets"
+              :blockedTickets="$store.getters.blockedTickets"
+              :toValidateTickets="$store.getters.toValidateTickets"
+              :doingTickets="$store.getters.doingTickets"
+            />
           </div>
         </div>
       </div>
@@ -63,12 +68,12 @@ import dayOptions from '../constants/dayOptions'
 import sprintOptions from '../constants/sprintOptions'
 import topicsOptions from '../constants/topicsOptions'
 
-import WarningTable from './WarningTable';
+import TicketsTable from './TicketsTable';
 
 export default {
   name: 'dashboard',
   components: {
-    WarningTable,
+    TicketsTable,
   },
   data() {
     return {
