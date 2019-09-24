@@ -24,15 +24,12 @@ const dayOptions = {
       },
     },
   },
-  stroke: { dashArray: 1 },
   fill: {
     colors: [
       function ({ value }) {
-        if (value < 55) {
-          return '#D9534F';
-        } else {
-          return '#0bc900';
-        }
+        if (value < 45) return '#D9534F';
+        if (value < 80) return '#ffa500';
+        return '#0bc900';
       }
     ],
   },

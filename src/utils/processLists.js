@@ -144,15 +144,15 @@ function processLists({ lists, cards }, callback) {
     topicsLabels: Object.keys(sprintLabels),
     sprintSeries: [{
       data: [{
-        x: sptintColumns[0], y: sprintSerie[sptintColumns[0]],
+        x: sptintColumns[0], y: sprintSerie[sptintColumns[0]] || 0,
       }, {
-        x: sptintColumns[1], y: sprintSerie[sptintColumns[1]],
+        x: sptintColumns[1], y: sprintSerie[sptintColumns[1]] || 0,
       }, {
-        x: sptintColumns[2], y: sprintSerie[sptintColumns[2]],
+        x: sptintColumns[2], y: sprintSerie[sptintColumns[2]] || 0,
       }, {
-        x: sptintColumns[3], y: sprintSerie[sptintColumns[3]],
+        x: sptintColumns[3], y: sprintSerie[sptintColumns[3]] || 0,
       }, {
-        x: sptintColumns[4], y: sprintSerie[sptintColumns[4]],
+        x: sptintColumns[4], y: sprintSerie[sptintColumns[4]] || 0,
       }, {
         x: lastSprintDoneList, y: lastSprintDonePoints,
       }],
