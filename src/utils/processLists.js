@@ -2,9 +2,10 @@ import moment from 'moment';
 
 function getPointsFromName(name) {
   var arr = name.match(/\((.*?)\)/g) || [""];
-  return arr
+  const points = arr
     ? parseInt(arr[0].replace( /(^.*\(|\).*$)/g, '' ))
     : 0;
+  return !Number.isNaN(points) ? points : 0;
 }
 
 function getDoneNumber(name) {
@@ -57,15 +58,9 @@ function processLists({ lists, cards }, callback) {
       {},
     );
 
-  console.log(Object.keys(trendPoints))
-
   const trendPointsData = Object.keys(trendPoints)
     .sort((a, b) => moment(a, 'MM/DD/YYYY').isSameOrAfter(moment(b, 'MM/DD/YYYY')))
     .map((list) => [list, trendPoints[list]])
-
-
-  console.log(trendPointsData);
-
 
   const trendMediaData = trendPointsData.map(
     (point, index) => {
