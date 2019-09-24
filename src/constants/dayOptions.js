@@ -1,5 +1,10 @@
 const dayOptions = {
-  chart: { type: 'radialBar' },
+  chart: {
+    type: 'radialBar',
+    animations: {
+      enabled: false,
+    }
+  },
   title: {
     text: 'Today Goal',
     align: 'center',

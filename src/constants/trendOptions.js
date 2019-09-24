@@ -14,7 +14,7 @@ const trendOptions = {
   },
   xaxis: {
     type: 'datetime',
-    forceNiceScale: true,
+    forceNiceScale: false,
     tickAmount: 1,
     labels: { show: true },
     axisBorder: { show: false },
@@ -22,7 +22,7 @@ const trendOptions = {
       show: false,
       borderType: 'solid',
       color: 'gray',
-      height: 4,
+      height: 0,
       offsetX: 0,
       offsetY: 0,
     },
@@ -34,11 +34,13 @@ const trendOptions = {
   },
   chart: {
     type: 'line',
-    background: 'transparent'
+    background: 'transparent',
   },
   legend: {
     fontSize: '18px',
-    position: 'bottom',
+    position: 'left',
+    offsetX: 50,
+    offsetY: 20,
     labels: { useSeriesColors: true },
     onItemHover: { highlightDataSeries: true },
     onItemClick: { toggleDataSeries: false },
