@@ -88,6 +88,9 @@ export default {
     },
     useDemo: function() {
       this.$store.commit('updateAnalysis', demoAnalysis);
+    },
+    hide () {
+      this.$emit('menu-display')
     }
   },
   watch: {
@@ -98,6 +101,7 @@ export default {
       setInterval(function() {
         self.getCards(); 
       }, 60000);
+      this.hide();
     }
   }
 }
