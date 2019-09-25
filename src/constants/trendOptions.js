@@ -38,9 +38,10 @@ const trendOptions = {
   },
   legend: {
     fontSize: '18px',
-    position: 'left',
-    offsetX: 50,
-    offsetY: 20,
+    position: 'bottom',
+    // position: 'left',
+    // offsetX: 50,
+    // offsetY: 20,
     labels: { useSeriesColors: true },
     onItemHover: { highlightDataSeries: true },
     onItemClick: { toggleDataSeries: false },
