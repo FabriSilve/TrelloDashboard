@@ -1,23 +1,9 @@
 import moment from 'moment';
 
-function getPointsFromName(name) {
-  var arr = name.match(/\((.*?)\)/g) || [""];
-  const points = arr
-    ? parseInt(arr[0].replace( /(^.*\(|\).*$)/g, '' ))
-    : 0;
-  return !Number.isNaN(points) ? points : 0;
-}
+import extractPoints from './extractPoints';
+import extractName from './extractName';
+import getListNumber from './getListNumber';
 
-function getDoneNumber(name) {
-  var arr = name.match(/[0-9]+/g) || [""];
-  return arr
-    ? parseInt(arr[0].replace( /(^.*\(|\).*$)/g, '' ))
-    : 0;
-}
-
-function cleanCardName(name) {
-  return name.split(/\(.+\)/).pop().trim();
-}
 
 function processLists({ lists, cards }, callback) {
   const listsMap = lists
@@ -32,8 +18,8 @@ function processLists({ lists, cards }, callback) {
 
   const formattedCards = cards
     .map((card) => {
-      const cardPoints = getPointsFromName(card.name);
-      const cardCleanedName = cleanCardName(card.name);
+      const cardPoints = extractPoints(card.name);
+      const cardCleanedName = extractName(card.name);
       return {
         id: card.id,
         list: listsMap[card.idList],
@@ -121,7 +107,7 @@ function processLists({ lists, cards }, callback) {
 
   const lastSprintDoneList = lists
     .filter(({ name }) => /^done #.*$/i.test(name))
-    .map(({ name }) => ({ name, num: getDoneNumber(name) }))
+    .map(({ name }) => ({ name, num: getListNumber(name) }))
     .sort((a, b) => a.num < b.num)[0].name;
 
   const lastSprintDonePoints = formattedCards
