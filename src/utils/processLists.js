@@ -3,18 +3,11 @@ import moment from 'moment';
 import extractPoints from './extractPoints';
 import extractName from './extractName';
 import getListNumber from './getListNumber';
+import getListsMap from './getListsMap';
 
 
 function processLists({ lists, cards }, callback) {
-  const listsMap = lists
-    .filter((l) => !l.closed)
-    .reduce(
-      (res, l) => {
-        res[l.id] = l.name;
-        return res;
-      },
-      {},
-    );
+  const listsMap = getListsMap(lists);
 
   const formattedCards = cards
     .map((card) => {
