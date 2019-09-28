@@ -13,6 +13,7 @@ window.Apex = {
   chart: {
     foreColor: '#ccc',
     toolbar: { show: false },
+    animations: { enabled: false },
   },
   stroke: {
     width: 3,

@@ -1,60 +1,24 @@
 import moment from 'moment';
 
-import extractPoints from './extractPoints';
-import extractName from './extractName';
 import getListNumber from './getListNumber';
 import getListsMap from './getListsMap';
+import formatCards from './formatCards';
+import aggregatePerDay from './aggregatePerDay';
+import aggregatePerList from './aggregatePerList';
+import donePointsPerDay from './donePointsPerDay';
+import getMediaSerie from './getMediaSerie';
 
 
 function processLists({ lists, cards }, callback) {
   const listsMap = getListsMap(lists);
 
-  const formattedCards = cards
-    .map((card) => {
-      const cardPoints = extractPoints(card.name);
-      const cardCleanedName = extractName(card.name);
-      return {
-        id: card.id,
-        list: listsMap[card.idList],
-        points: cardPoints,
-        name: cardCleanedName,
-        labels: card.labels.map(({ name, color }) => ({ name, color })),
-        day: moment(card.dateLastActivity)
-      };
-    }, [])
-    .sort((a, b) => (moment(a.day).isSameOrAfter(b.day)));
+  const formattedCards = formatCards(cards, listsMap);
 
-  const trendPoints = formattedCards
-    .filter(({ list, day }) => /^done #[0-9]+$/i.test(list) && moment().subtract(1, 'months').isBefore(day))
-    .reduce(
-      (trendData, card) => {
-        const formattedDay = moment(card.day).format('MM/DD/YYYY');
-        if (trendData[formattedDay]) trendData[formattedDay] += card.points;
-        else trendData[formattedDay] = card.points || 0;
+  const aggregatedPerDay = aggregatePerDay(formattedCards);
+  // const aggregatedDonePerList = aggregatePerList(formattedCards);
 
-        return trendData;
-      },
-      {},
-    );
-
-  const trendPointsData = Object.keys(trendPoints)
-    .sort((a, b) => moment(a, 'MM/DD/YYYY').isSameOrAfter(moment(b, 'MM/DD/YYYY')))
-    .map((list) => [list, trendPoints[list]])
-
-  const trendMediaData = trendPointsData.map(
-    (point, index) => {
-      const values = [];
-      let count = 0;
-      for (let j = index - 1; j >=0 && count < 3; j -= 1) {
-        values.push(trendPointsData[j][1])
-        count += 1
-      }
-      const averange = values.length
-      ? Math.ceil(values.reduce((pre, curr) => curr += pre) / values.length)
-      : point[1];
-      return [point[0], averange];
-    }
-  ).sort((a, b) => (moment(a.day).isSameOrAfter(b.day)));
+  const trendPointsData = donePointsPerDay(aggregatedPerDay);
+  const trendMediaData = getMediaSerie(trendPointsData);
 
   const todayDonePoints = formattedCards
     .filter(({ list, day }) => /^done.*$/i.test(list) && moment().isSame(day, 'day'))
@@ -78,7 +42,6 @@ function processLists({ lists, cards }, callback) {
     .map(({ id, name, points, day }) => ({ id, name, points, day }))
     .filter(({ name, points }) => !!name && !!points);
 
-  console.log(doingTicketsData)
 
   const sprintLabels = {};
 
