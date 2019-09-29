@@ -1,8 +1,8 @@
-import processLists from '@/utils/processLists';
+import analyze from '@/utils/analyze';
 
-describe('processLists tests', () => {
+describe('analyze tests', () => {
   test.skip('Return empty analysis if invalid board format', () => {
-    const result = processLists({});
+    const result = analyze({});
     expected(result).not.toBeDefined();
   })
 

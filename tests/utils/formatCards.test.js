@@ -38,6 +38,7 @@ describe('formatCards', () => {
   });
 
   test.todo('Should return formatted cards in right order');
+  test.todo('Should return only valid cards');
 
   test('Should throw and error if a list has a wrong format', () => {
     const cards = [{

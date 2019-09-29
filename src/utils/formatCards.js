@@ -24,6 +24,7 @@ const formatCards = (cards, listsMap) => cards
       day: moment(card.dateLastActivity)
     };
   }, [])
+  .filter(({ name }) => !!name)
   .sort((a, b) => (moment(a.day).isSameOrAfter(b.day)));
 
 export default formatCards;

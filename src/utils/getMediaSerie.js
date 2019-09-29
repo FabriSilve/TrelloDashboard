@@ -1,6 +1,6 @@
 const average = arr => arr.reduce((p, c) => p + c[1], 0) / arr.length;
 
-const getMediaSerie = (serie, mediaItems = 5) => serie.map(
+const getMediaSerie = (serie, mediaItems = 3) => serie.map(
   (data, index, array) => {
     const left = index - mediaItems > 0 ? index - mediaItems : 0;
     const subArray = array.slice(left, index);

@@ -1,8 +1,8 @@
 const aggregatePerList = (cards) => cards
   .reduce(
     (aggregation, card) => {
-      if (aggregation[list]) aggregation[list].push(card);
-      else aggregation[list] = [card];
+      if (aggregation[card.list]) aggregation[card.list].push(card);
+      else aggregation[card.list] = [card];
 
       return aggregation;
     },

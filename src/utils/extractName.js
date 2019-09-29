@@ -1,8 +1,8 @@
 const FORMAT = /^\([0-9]+\).*$/;
-const EXTRACT_NAME = /^\(*([0-9]+)\)/;
+const EXTRACT_NAME = /\(.+\)/;
 
 const extractName = (name) => FORMAT.test(name)
-  ? name.split(/\(.+\)/).pop().trim()
-  : 0;
+  ? name.split(EXTRACT_NAME).pop().trim()
+  : '';
 
 export default extractName;
