@@ -4,7 +4,7 @@
     <button v-if="!auth" @click="useDemo">
       Try Demo
     </button>
-    <button v-if="!auth" @click="authenticateWithTrello">
+    <button v-if="!auth" @click="authenticate">
       authenticate with trello
     </button>
     <select
@@ -30,7 +30,7 @@ import Footer from './Footer';
 
 import demoAnalysis from '../demo/analysis';
 
-import processLists from '../utils/processLists';
+import analyze from '../utils/analyze';
 
 
 export default {
@@ -46,12 +46,15 @@ export default {
       board: '',
     }
   },
+  mounted: function() {
+    if (!!localStorage.getItem('trello_token')) this.authenticate();
+  },
   methods: {
     clearStorage: function(error) {
-      console.error(err);
-      global.localStorage.removeItem('trello_token');
+      console.error(error);
+      localStorage.removeItem('trello_token');
     },
-    authenticateWithTrello: function() {
+    authenticate: function() {
       this.$store.commit('loadingStart')
       Trello.authorize({
         name: "Trello Dashboard",
@@ -86,7 +89,7 @@ export default {
         },
         (lists) => {
           this.lists = lists;
-          processLists(lists, this.saveAnalysis);
+          analyze(lists, this.saveAnalysis);
         },
         this.clearStorage,
       )
