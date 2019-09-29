@@ -47,6 +47,10 @@ export default {
     }
   },
   methods: {
+    clearStorage: function(error) {
+      console.error(err);
+      global.localStorage.removeItem('trello_token');
+    },
     authenticateWithTrello: function() {
       this.$store.commit('loadingStart')
       Trello.authorize({
@@ -55,15 +59,19 @@ export default {
         scope: { read: 'true' },
         expiration: '1day',
         success: this.getBoards,
-        error: (err) => console.error(err),
+        error: this.clearStorage,
       })
     },
     getBoards: function () {
       this.$store.commit('loadingEnd')
-      Trello.get("member/me/boards", (result) => {
-        this.auth = true;
-        this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
-      })
+      Trello.get(
+        "member/me/boards",
+        (result) => {
+          this.auth = true;
+          this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
+        },
+        this.clearStorage,
+      )
     },
     getCards: function () {
       Trello.get(
@@ -79,7 +87,8 @@ export default {
         (lists) => {
           this.lists = lists;
           processLists(lists, this.saveAnalysis);
-        }
+        },
+        this.clearStorage,
       )
     },
     saveAnalysis: function (analysis) {
