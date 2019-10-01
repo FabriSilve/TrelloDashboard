@@ -15,10 +15,38 @@ import getSprintLabels from './getSprintLabels';
 const SPRINT_LISTS = ['Sprint Backlog', 'Doing', 'Blocked', 'To Validate', 'Validated'];
 
 
-function analyze({ lists, cards }, callback) {
+async function analyze(boardId) {
+  const board = await Trello.get(
+    `/boards/${boardId}`,
+    {
+      cards: 'open',
+      card_fields: 'dateLastActivity,name,shortUrl,labels,idList,idMembers,id,url',
+      filter: 'open',
+      fields: 'cards,name,idOrganization',
+      lists: 'open',
+      organisation: true,
+    },
+  )
+  // const members = await Trello.get(
+  //   `/boards/${boardId}/members`,
+  //   {
+  //     fields: 'id,fullName,avatarUrl,initials',
+  //   },
+  // )
+  // const org = await Trello.get(
+  //   `/organizations/5a0c6a477c67d845e639a404`,
+  //   {
+  //     fields: 'id,displayName,url,logoUrl'
+  //   },
+  // )
+  // // console.log('data', members, org, board)
+
+  const { lists, cards } = board;
   const listsMap = getListsMap(lists);
 
   const formattedCards = formatCards(cards, listsMap);
+
+  // console.log('card', formattedCards[formattedCards.length - 1])
 
   const aggregatedPerDay = aggregatePerDay(formattedCards);
   const aggregatedPerList = aggregatePerList(formattedCards);
@@ -37,7 +65,7 @@ function analyze({ lists, cards }, callback) {
   const sprintData = getSprintPoints(aggregatedPerList, sprintLists);
   const sprintLabels = getSprintLabels(formattedCards, sprintLists);
 
-  callback({
+  return {
     trendSeries: [{
       name: 'Media',
       type: 'line',
@@ -63,7 +91,7 @@ function analyze({ lists, cards }, callback) {
     blockedTickets: aggregatedPerList['Blocked'] || [],
     toValidateTickets: aggregatedPerList['To Validate'] || [],
     doingTickets: aggregatedPerList['Doing'] || [],
-  });
+  };
 }
 
 export default analyze;

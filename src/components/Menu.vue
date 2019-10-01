@@ -44,6 +44,7 @@ export default {
       auth: false,
       boards: [],
       board: '',
+      lists: [],
     }
   },
   mounted: function() {
@@ -54,48 +55,39 @@ export default {
       console.error(error);
       localStorage.removeItem('trello_token');
     },
-    authenticate: function() {
+    authenticate: async function() {
       this.$store.commit('loadingStart')
-      Trello.authorize({
-        name: "Trello Dashboard",
-        type: "popup",
-        scope: { read: 'true' },
-        expiration: '1day',
-        success: this.getBoards,
-        error: this.clearStorage,
-      })
+      try {
+        await Trello.authorize({
+          name: "Trello Dashboard",
+          type: "popup",
+          scope: { read: 'true' },
+          expiration: '1day',
+        });
+        this.getBoards();
+      } catch (e) {
+        this.clearStorage();
+      }
     },
-    getBoards: function () {
+    getBoards: async function () {
       this.$store.commit('loadingEnd')
-      Trello.get(
-        "member/me/boards",
-        (result) => {
-          this.auth = true;
-          this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
-        },
-        this.clearStorage,
-      )
+      try { 
+        const result = await Trello.get(
+          "member/me/boards",
+        )
+        this.auth = true;
+        this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
+      } catch(e) {
+        this.clearStorage();
+      }
     },
-    getCards: function () {
-      Trello.get(
-        `/boards/${this.board.id}`,
-        {
-          cards: 'open',
-          card_fields: 'dateLastActivity,name,shortUrl,labels,idList',
-          filter: 'open',
-          fields: 'cards,name',
-          lists: 'open',
-          organisation: true,
-        },
-        (lists) => {
-          this.lists = lists;
-          analyze(lists, this.saveAnalysis);
-        },
-        this.clearStorage,
-      )
-    },
-    saveAnalysis: function (analysis) {
-      this.$store.commit('updateAnalysis', analysis);
+    getCards: async function () {
+      try {
+        const analysis = await analyze(this.board.id);
+        this.$store.commit('updateAnalysis', analysis);
+      } catch (e) {
+        this.clearStorage;
+      }
       this.$store.commit('loadingEnd');
     },
     useDemo: function() {

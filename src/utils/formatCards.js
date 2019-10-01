@@ -21,6 +21,8 @@ const formatCards = (cards, listsMap) => cards
       points: cardPoints,
       name: cardCleanedName,
       labels: formattedLabels,
+      url: card.url,
+      members: card.idMembers,
       day: moment(card.dateLastActivity)
     };
   }, [])
