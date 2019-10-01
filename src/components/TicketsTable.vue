@@ -131,7 +131,7 @@ export default {
 
 .tickets-list {
   width: 100%;
-  height: 400px;
+  height: 350px;
   overflow-y: scroll;
   display: flex;
   flex-direction: column;
