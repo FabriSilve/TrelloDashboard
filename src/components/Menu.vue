@@ -1,10 +1,13 @@
 <template>
   <div id="menu" v-if="show">
     <p>Menu</p>
-    <button v-if="!auth" @click="useDemo">
+    <button v-if="token" @click="logout">
+      Logout
+    </button>
+    <button v-if="!token" @click="useDemo">
       Try Demo
     </button>
-    <button v-if="!auth" @click="authenticate">
+    <button v-if="!token" @click="authenticate">
       authenticate with trello
     </button>
     <select
@@ -32,6 +35,8 @@ import demoAnalysis from '../demo/analysis';
 
 import analyze from '../utils/analyze';
 
+import trello from '../api/trello';
+
 
 export default {
   name: 'Menu',
@@ -41,45 +46,28 @@ export default {
   },
   data () {
     return {
-      auth: false,
       boards: [],
       board: '',
       lists: [],
+      token: null,
     }
   },
   mounted: function() {
-    if (!!localStorage.getItem('trello_token')) this.authenticate();
+    this.checkToken();
   },
   methods: {
-    clearStorage: function(error) {
-      console.error(error);
-      localStorage.removeItem('trello_token');
+    logout: function() {
+      trello.logout();
     },
     authenticate: async function() {
       this.$store.commit('loadingStart')
-      try {
-        await Trello.authorize({
-          name: "Trello Dashboard",
-          type: "popup",
-          scope: { read: 'true' },
-          expiration: '1day',
-        });
-        this.getBoards();
-      } catch (e) {
-        this.clearStorage();
-      }
+      await trello.authenticate();
+      this.$store.commit('loadingEnd')
     },
     getBoards: async function () {
       this.$store.commit('loadingEnd')
-      try { 
-        const result = await Trello.get(
-          "member/me/boards",
-        )
-        this.auth = true;
-        this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
-      } catch(e) {
-        this.clearStorage();
-      }
+      const result = await trello.getBoards();
+      this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
     },
     getCards: async function () {
       try {
@@ -95,6 +83,14 @@ export default {
     },
     hide () {
       this.$emit('menu-display')
+    },
+    checkToken: function() {
+      const authToken = localStorage.getItem('trello_token');
+      if (!!authToken) return this.token = authToken;
+      var self = this;
+      setTimeout(function() {
+        self.checkToken();
+      }, 1000);
     }
   },
   watch: {
@@ -106,8 +102,11 @@ export default {
         self.getCards(); 
       }, 60000);
       this.hide();
+    },
+    token: function() {
+      this.getBoards();
     }
-  }
+  },
 }
 </script>
 
