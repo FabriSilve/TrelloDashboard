@@ -4,25 +4,44 @@
     v-bind="ticket"
     :key="ticket.id"
   >
-    <span class="num">{{ticket.num}}</span>
-    <span class="since">{{since}}</span>
-    <span class="title">{{title}}</span>
-    <span class="points">{{ticket.points}}</span>
+    <div class="row header">
+      <span class="number">{{number}}</span>
+      <span class="label">{{labels}}</span>
+      <span class="since">{{since}}</span>
+    </div>
+    <div class="row">
+      <span class="title">{{title}}</span>
+      <span class="points">{{ticket.points}}</span>
+    </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import moment from 'moment';
+
+const cardNumber = (url) => url
+  .match(/\/([0-9]+)[^-]/)[0];
 
 export default {
   name: 'Ticket',
   props: ['ticket'],
   computed: {
     title: function() {
-      return this.ticket.name.length > 130
-        ? `${this.ticket.name.substring(0, 130)}...`
-        : this.ticket.name;
+      if (this.ticket.name.length < 130) return this.ticket.name;
+      return `${this.ticket.name.substring(0, 130)}...`;
     },
+    since: function() {
+      const minutes = moment().diff(this.ticket.day, 'minutes');
+      if (minutes < 120) return `${minutes} m`;
+      if (minutes < 1440) return `${minutes % 60} h`;
+      return `${(minutes % 60) % 24} d`;
+    },
+    number: function() {
+      return cardNumber(this.ticket.url).slice(1);
+    },
+    labels: function() {
+      return this.ticket.labels.map(l => l.name).join(' - ');
+    }
   },
 }
 </script>
@@ -30,22 +49,48 @@ export default {
 <style scoped>
 .ticket {
   margin: 0.5rem auto;
-  padding: 1rem;
+  /* padding: 1rem; */
   width: 100%;
   min-height: 4rem;
   background-color: #374462;
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   align-items: center;
   justify-content: space-between;
   color: white;
   border: 1px solid grey;
+  border-radius: 5px;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.header {
+  background: rgb(106, 106, 216);
+  border-bottom: 1px solid grey;
+}
+
+.title {
+  width: calc(100% - 4rem - 5px);
+  padding: 5px;
+  font-size: 110%;
+}
+
+.number, .since {
+  padding: 1px 5px;
+  background: #374462;
+  /* border-radius: 4px; */
 }
 
 .points {
   height: 2rem;
   min-width: 2rem;
-  margin: 1rem;
+  margin: 5px;
   display: flex;
   align-items: center;
   justify-content: center;
