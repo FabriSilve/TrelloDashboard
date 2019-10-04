@@ -23,7 +23,7 @@ const formatCards = (cards, listsMap) => cards
       labels: formattedLabels,
       url: card.url,
       members: card.idMembers,
-      day: moment(card.dateLastActivity)
+      day: moment(card.dateLastActivity),
     };
   }, [])
   .filter(({ name }) => !!name)

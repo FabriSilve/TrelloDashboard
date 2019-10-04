@@ -2,7 +2,7 @@ const trendOptions = {
   plotOptions: {
     bar: {
       horizontal: false,
-      columnWidth: '10%',
+      columnWidth: '25%',
       endingShape: 'rounded',
     },
   },

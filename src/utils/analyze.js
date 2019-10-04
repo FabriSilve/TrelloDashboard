@@ -46,12 +46,11 @@ async function analyze(boardId) {
 
   const formattedCards = formatCards(cards, listsMap);
 
-  // console.log('card', formattedCards[formattedCards.length - 1])
-
   const aggregatedPerDay = aggregatePerDay(formattedCards);
   const aggregatedPerList = aggregatePerList(formattedCards);
 
   const trendPointsData = donePointsPerDay(aggregatedPerDay);
+  const defectPointsData = donePointsPerDay(aggregatedPerDay, /^defect$/i);
   const trendMediaData = getMediaSerie(trendPointsData);
 
   const today = moment().format('YYYYMMDD');
@@ -77,7 +76,7 @@ async function analyze(boardId) {
     }, {
       name: 'Defect',
       type: 'bar',
-      data: [],
+      data: defectPointsData,
     }],
   
     daySeries: [todayData],

@@ -2,7 +2,7 @@ import moment from 'moment';
 
 const DONE_REGEX = /^done #[0-9]+$/i;
 
-const donePointsPerDay = (aggregation, interval = 30) => Object.keys(aggregation)
+const donePointsPerDay = (aggregation, label = /^.*$/, interval = 30) => Object.keys(aggregation)
   .filter((item) => moment().subtract(interval, 'days')
     .isBefore(moment(item, 'YYYYMMDD'), 'day'))
   .sort((a, b) => a > b)
@@ -10,6 +10,7 @@ const donePointsPerDay = (aggregation, interval = 30) => Object.keys(aggregation
     moment(day, 'YYYYMMDD').format('MM/DD/YYYY'),
     aggregation[day].reduce((sum, card) => {
       if (!DONE_REGEX.test(card.list)) return sum; 
+      if (!card.labels.map(l => label.test(l.name)).some(v => v)) return sum;
       return sum + card.points;
     }, 0),
   ])
