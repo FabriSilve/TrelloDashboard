@@ -1,86 +1,37 @@
 <template>
   <div
     id="tickets-table"
-    v-bind:class="{ alert: isAlert }">
+    v-bind:class="{ alert: isAlert }"
+  >
     <div
       id="warnings-tickets"
-      v-if="blockedTickets.length > 0"
+      v-if="mainTickets.length > 0"
     >
       <div class="title">
-        <span>⚠️ Tickets Blocked ⚠️</span>
+        <span>{{listTitle}}</span>
       </div>
       <div class="tickets-list">
-        <div
-          class="ticket"
-          v-for="ticket in blockedTickets"
+        <Ticket
+          v-for="ticket in mainTickets"
           :key="ticket.id"
-        >
-          <!-- <span class="ticket-day">{{ticket.day}}</span> -->
-          <span class="ticket-title">{{ticket.name.length > 130 ? `${ticket.name.substring(0, 130)}...` : ticket.name}}</span>
-          <span class="points">{{ticket.points}}</span>
-        </div>
+          :ticket="ticket"
+        />
       </div>
     </div>
-    <div
-      id="warnings-tickets"
-      v-else-if="toValidateTickets.length > 0"
-    >
-      <div class="title">
-        <span>🔍 Tickets to validate 🔎</span>
-      </div>
-      <div class="tickets-list">
-        <div
-          class="ticket"
-          v-for="ticket in toValidateTickets"
-          :key="ticket.id"
-        >
-          <!-- <span class="ticket-day">{{ticket.day}}</span> -->
-          <span class="ticket-title">{{ticket.name.length > 130 ? `${ticket.name.substring(0, 130)}...` : ticket.name}}</span>
-          <span class="points">{{ticket.points}}</span>
-        </div>
-        <div
-          v-if="!isAlert"
-          class="no-ticket"
-          @click="test()"
-        >
-          No tickets need special attention
-        </div>
-      </div>
-    </div>
-    <div
-      id="warnings-tickets"
-      v-else-if="doingTickets.length > 0"
-    >
-      <div class="title">
-        <span>⏳ Tickets in Progress ⌛️</span>
-      </div>
-      <div class="tickets-list">
-        <div
-          class="ticket"
-          v-for="ticket in doingTickets"
-          :key="ticket.id"
-        >
-          <!-- <span class="ticket-day">{{ticket.day}}</span> -->
-          <span class="ticket-title">{{ticket.name.length > 130 ? `${ticket.name.substring(0, 130)}...` : ticket.name}}</span>
-          <span class="points">{{ticket.points}}</span>
-        </div>
-      </div>
-    </div>
-    <div
-      v-else
-      class="no-ticket"
-      @click="test()"
-    >
+    <div v-else class="no-ticket">
       No tickets need special attention
     </div>
   </div>
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import Ticket from './Ticket';
 
 export default {
   name: 'TicketsTable',
+  components: {
+    Ticket,
+  },
   props: [
     'blockedTickets',
     'toValidateTickets',
@@ -94,6 +45,18 @@ export default {
       ) return false;
       return this.blockedTickets.length > 0
         || this.toValidateTickets.length > 0;
+    },
+    listTitle: function() {
+      if (this.blockedTickets.length > 0) return '⚠️ Tickets Blocked ⚠️';
+      if (this.toValidateTickets.length > 0) return '🔍 Tickets to validate 🔎';
+      if (this.doingTickets.length > 0) return '⏳ Tickets in Progress ⌛️';
+      return '';
+    },
+    mainTickets: function() {
+      if (this.blockedTickets.length > 0) return this.blockedTickets;
+      if (this.toValidateTickets.length > 0) return this.toValidateTickets;
+      if (this.doingTickets.length > 0) return this.doingTickets;
+      return [];
     },
   },
 }
@@ -139,20 +102,6 @@ export default {
   justify-content: flex-start;
 }
 
-.ticket {
-  margin: 0.5rem auto;
-  padding: 1rem;
-  width: 95%;
-  min-height: 4rem;
-  background-color: #374462;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  color: white;
-  border: 1px solid grey;
-}
-
 .no-ticket {
   border: 1px solid grey;
   margin: 2rem auto;
@@ -163,20 +112,6 @@ export default {
   align-items: center;
   justify-content: center;
 }
-
-.points {
-  height: 2rem;
-  min-width: 2rem;
-  margin: 1rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: orange;
-  border-radius: 1rem;
-  font-weight: bold;
-}
-
-
 
 .alert {
   animation: pulse 2s infinite;

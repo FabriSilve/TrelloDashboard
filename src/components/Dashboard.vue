@@ -3,7 +3,7 @@
     <div class="container-fluid">
       <div class="row mt-4">
         <div class="col-md-8">
-          <div class="box shadow mt-2">
+          <div class="box pt-2 mt-2">
             <apexchart
             v-if="$store.getters.trendSeries"
             height="430"
@@ -13,7 +13,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="box shadow mt-2">
+          <div class="box pt-2 mt-2">
             <apexchart
               v-if="$store.getters.daySeries"
               height="530"
@@ -26,7 +26,7 @@
       </div>
       <div class="row mt-4">
         <div class="col-md-4">
-          <div class="box shadow">
+          <div class="box pt-2">
             <apexchart
               v-if="$store.getters.sprintSeries"
               type=bar
@@ -37,7 +37,7 @@
           </div>
         </div>
         <div class="col-md-4">
-          <div class="box shadow">
+          <div class="box pt-2">
             <apexchart
               v-if="$store.getters.topicsSeries"
               type="radar"
@@ -96,6 +96,6 @@ export default {
 .box {
   height: 100%;
   background-color: #2B2D3E;
-  padding: 5px 0;
+  padding: 0;
 }
 </style>
