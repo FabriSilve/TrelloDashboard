@@ -1,9 +1,6 @@
 const dayOptions = {
   chart: {
     type: 'radialBar',
-    animations: {
-      enabled: false,
-    }
   },
   title: {
     text: 'Today Goal',
@@ -11,32 +8,48 @@ const dayOptions = {
   },
   plotOptions: {
     radialBar: {
-      startAngle: -140,
-      endAngle: 140,
+      startAngle: 30,
+      endAngle: 330,
       hollow: {
         size: '45%',
         background: 'transparent',
         image: undefined,
       },
       dataLabels: {
-        name: { show: false },
+        name: {
+          show: true,
+          offsetY: -20,
+          color: '#eeeeee',
+        },
         value: {
           offsetY: 20,
           fontSize: '50px',
           color: undefined,
-          formatter: (val) => `${val} %`,
+          formatter: (val) => `${Math.ceil(val)}%`,
         },
+        total: {
+          show: true,
+          label: 'TOTAL',
+          formatter: function (w) {
+            return Math.ceil(w.globals.seriesTotals.reduce((a, b) => {
+              return a + b
+            }, 0)) + '%'
+          }
+        }
       },
     },
   },
-  fill: {
-    colors: [
-      function ({ value }) {
-        if (value < 45) return '#D9534F';
-        if (value < 80) return '#ffa500';
-        return '#0bc900';
-      }
-    ],
+  legend: {
+    show: true,
+    floating: true,
+    fontSize: '22px',
+    position: 'left',
+    offsetX: 170,
+    offsetY: 60,
+    width: 100,
+    labels: {
+      useSeriesColors: true,
+    },
   },
 };
 

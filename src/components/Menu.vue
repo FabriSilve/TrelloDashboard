@@ -1,15 +1,10 @@
 <template>
   <div id="menu" v-if="show">
     <p>Menu</p>
-    <button v-if="token" @click="logout">
-      Logout
-    </button>
-    <button v-if="!token" @click="useDemo">
-      Try Demo
-    </button>
-    <button v-if="!token" @click="authenticate">
-      authenticate with trello
-    </button>
+    <button v-if="token" @click="logout">Logout</button>
+    <button v-if="!!board" @click="refresh">Refresh Data</button>
+    <button v-if="!token" @click="useDemo">Try Demo</button>
+    <button v-if="!token" @click="authenticate">Authenticate</button>
     <select
       v-if="boards.length > 0"
       v-model="board"
@@ -59,6 +54,11 @@ export default {
     logout: function() {
       trello.logout();
     },
+    refresh: function() {
+      this.$store.commit('loadingStart')
+      this.runAnalysis();
+      this.hide();
+    },
     authenticate: async function() {
       this.$store.commit('loadingStart')
       await trello.authenticate();
@@ -69,7 +69,7 @@ export default {
       const result = await trello.getBoards();
       this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
     },
-    getCards: async function () {
+    runAnalysis: async function () {
       try {
         const analysis = await analyze(this.board.id);
         this.$store.commit('updateAnalysis', analysis);
@@ -96,10 +96,10 @@ export default {
   watch: {
     board: function() {
       this.$store.commit('loadingStart');
-      this.getCards();
+      this.runAnalysis();
       var self = this;
       setInterval(function() {
-        self.getCards(); 
+        self.runAnalysis(); 
       }, 60000);
       this.hide();
     },

@@ -1,5 +1,5 @@
 <template>
-  <section id="fog" v-if="$store.getters.loading"> 
+  <section id="fog"> 
     <div class="loader">
       <div />
       <div />
@@ -7,7 +7,7 @@
       <div />
       <div />
     </div>
-    <span>Analyzing data...</span>
+    <span>Trello Dashboard</span>
   </section>
 </template>
 
@@ -19,15 +19,16 @@ export default {
 
 <style scoped>
 #fog {
-  position: fixed;
   width: 100%;
-  height: 100%;
+  margin-top: 20%;
+  height: 40%;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  background-color: rgba(106, 106, 216, 0.8);
-  z-index: 3;
+  align-self: stretch;
+  color: white;
+  font-size: 120%;
 }
 
 .loader {
@@ -35,17 +36,16 @@ export default {
   flex-direction: row;
   align-items: flex-end;
   justify-content: center;
-  position: relative;
-  height: 60px;
-  padding: 1px;
+  height: 140px;
+  padding: 10px;
   margin: 1rem;
 
-  border-bottom: 3px solid rgb(15, 0, 130);
-  border-left: 3px solid rgb(15, 0, 130);
+  border-bottom: 3px solid grey;
+  border-left: 3px solid grey;
 }
 .loader div {
-  margin: 0 3px;
-  width: 13px;
+  margin: 0 5px;
+  width: 25px;
   background: #fff;
   animation: loader 1.5s infinite;
 }
@@ -71,13 +71,13 @@ export default {
 }
 @keyframes loader {
   0% {
-    height: 15px;
+    height: 25px;
   }
   50% {
-    height: 55px;
+    height: 105px;
   }
   100% {
-    height: 15px;
+    height: 25px;
   }
 }
 

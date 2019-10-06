@@ -20,6 +20,31 @@ const formatOrg = (org) => ({
   url: org.url,
 });
 
+const formatMember = (member) => ({
+  id: member.id,
+  initials: member.initials,
+});
+
+const getMembersMap = (members) => members
+  .reduce(
+    (res, m) => {
+      res[m.id] = formatMember(m);
+      return res;
+    },
+    {},
+  );
+
+const getMembersPoints = (cards) => cards
+  .filter(({ list }) => /^done.*$/i.test(list))
+  .reduce((map, { points, members }) => {
+    if (!members.length) return map;
+    members.forEach((m) => {
+      if (map[m]) map[m] += points;
+      else map[m] = points;
+    })
+    return map;
+  }, {});
+
 
 async function analyze(boardId) {
   const board = await Trello.get(
@@ -39,12 +64,14 @@ async function analyze(boardId) {
     : {};
   const formattedOrg = formatOrg(rowOrg);
 
-  // const members = await Trello.get(
-  //   `/boards/${boardId}/members`,
-  //   {
-  //     fields: 'id,fullName,avatarUrl,initials',
-  //   },
-  // )
+  const members = await Trello.get(
+    `/boards/${boardId}/members`,
+    {
+      fields: 'id,fullName,avatarUrl,initials',
+    },
+  )
+
+  const membersMap = getMembersMap(members);
 
   const { lists, cards } = board;
   const listsMap = getListsMap(lists);
@@ -59,9 +86,14 @@ async function analyze(boardId) {
   const trendMediaData = getMediaSerie(trendPointsData);
 
   const today = moment().format('YYYYMMDD');
-  const todayPoints = cardsPoints(aggregatedPerDay[today] || [], /^done.*$/i);
+  const membersPoint = getMembersPoints(aggregatedPerDay[today] || []);
+
   const lastMedia = trendMediaData[trendMediaData.length -1][1];
-  const todayData = Math.ceil(todayPoints / lastMedia * 100);
+  const todayData = Object.keys(membersPoint)
+    .map((v) => [
+      membersMap[v].initials,
+      membersPoint[v] / lastMedia * 100,
+    ]);
 
   const lastDoneList = getLastList(aggregatedPerList);
   const sprintLists = [...SPRINT_LISTS, lastDoneList];
@@ -70,6 +102,7 @@ async function analyze(boardId) {
   const sprintLabels = getSprintLabels(formattedCards, sprintLists);
 
   return {
+    analyzed: true,
     trendSeries: [{
       name: 'Media',
       type: 'line',
@@ -84,8 +117,9 @@ async function analyze(boardId) {
       data: defectPointsData,
     }],
   
-    daySeries: [todayData],
-    dayLabels: ['Today Trend'],
+    isWorkingDay: todayData.length > 0,
+    daySeries: todayData.length ? todayData.map(([_,p]) => p) : [0],
+    dayLabels: todayData.map(([n]) => n),
   
     topicsSeries: [{ data: Object.values(sprintLabels) }],
     topicsLabels: Object.keys(sprintLabels),

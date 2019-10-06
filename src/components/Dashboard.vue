@@ -15,12 +15,15 @@
         <div class="col-md-4">
           <div class="box pt-2 mt-2">
             <apexchart
-              v-if="$store.getters.daySeries"
+              v-if="$store.getters.isWorkingDay"
               height="530"
               type=radialBar
               :options="{ ...dayOptions, labels: $store.getters.dayLabels }"
               :series="$store.getters.daySeries"
             />
+            <div v-else class="no-work">
+              Not work done today
+            </div>
           </div>
         </div>
       </div>
@@ -98,4 +101,16 @@ export default {
   background-color: #2B2D3E;
   padding: 0;
 }
+
+.no-work {
+  border: 1px solid grey;
+  margin: 45% auto;
+  padding: 1rem;
+  width: 95%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
 </style>

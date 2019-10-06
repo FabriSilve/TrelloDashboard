@@ -1,8 +1,8 @@
 <template>
   <section id="page">
     <Header />
-    <Dashboard />
-    <Loader />
+    <Dashboard v-if="$store.getters.analyzed"/>
+    <Loader v-if="!$store.getters.analyzed"/>
   </section>
 </template>
 
