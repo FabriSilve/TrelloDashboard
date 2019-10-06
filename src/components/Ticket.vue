@@ -7,7 +7,7 @@
     <div class="row header">
       <span class="number">{{number}}</span>
       <span class="label">{{labels}}</span>
-      <span class="since">{{since}}</span>
+      <span class="since">~ {{since}}</span>
     </div>
     <div class="row">
       <span class="title">{{title}}</span>
@@ -31,10 +31,14 @@ export default {
       return `${this.ticket.name.substring(0, 130)}...`;
     },
     since: function() {
-      const minutes = moment().diff(this.ticket.day, 'minutes');
+      const duration = moment.duration(moment().diff(this.ticket.day));
+      const minutes = Math.ceil(duration.asMinutes());
+      const hours = Math.ceil(duration.asHours());
+      const days = Math.ceil(duration.asDays());
+
       if (minutes < 120) return `${minutes} m`;
-      if (minutes < 1440) return `${minutes % 60} h`;
-      return `${(minutes % 60) % 24} d`;
+      if (hours < 24) return `${hours} h`;
+      return `${days} d`;
     },
     number: function() {
       return cardNumber(this.ticket.url).slice(1);
