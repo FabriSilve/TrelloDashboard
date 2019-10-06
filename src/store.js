@@ -21,6 +21,7 @@ const store = new Vuex.Store({
   },
   getters: {
     loading: state => state.loading,
+
     analysis: state => state.analysis,
     trendSeries: state => state.analysis.trendSeries,
     daySeries: state => state.analysis.daySeries,
@@ -31,6 +32,7 @@ const store = new Vuex.Store({
     blockedTickets: state => state.analysis.blockedTickets,
     toValidateTickets: state => state.analysis.toValidateTickets,
     doingTickets: state => state.analysis.doingTickets,
+    organisation: state => state.analysis.organisation,
   }
 })
 

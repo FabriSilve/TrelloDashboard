@@ -14,6 +14,12 @@ import getSprintLabels from './getSprintLabels';
 
 const SPRINT_LISTS = ['Sprint Backlog', 'Doing', 'Blocked', 'To Validate', 'Validated'];
 
+const formatOrg = (org) => ({
+  name: org.displayName,
+  logo: `${org.logoUrl}/50.png`,
+  url: org.url,
+});
+
 
 async function analyze(boardId) {
   const board = await Trello.get(
@@ -27,19 +33,18 @@ async function analyze(boardId) {
       organisation: true,
     },
   )
+
+  const rowOrg = board.idOrganization
+    ? await Trello.get(`/organizations/${board.idOrganization}`, { fields: 'id,displayName,url,logoUrl' })
+    : {};
+  const formattedOrg = formatOrg(rowOrg);
+
   // const members = await Trello.get(
   //   `/boards/${boardId}/members`,
   //   {
   //     fields: 'id,fullName,avatarUrl,initials',
   //   },
   // )
-  // const org = await Trello.get(
-  //   `/organizations/5a0c6a477c67d845e639a404`,
-  //   {
-  //     fields: 'id,displayName,url,logoUrl'
-  //   },
-  // )
-  // // console.log('data', members, org, board)
 
   const { lists, cards } = board;
   const listsMap = getListsMap(lists);
@@ -90,6 +95,8 @@ async function analyze(boardId) {
     blockedTickets: aggregatedPerList['Blocked'] || [],
     toValidateTickets: aggregatedPerList['To Validate'] || [],
     doingTickets: aggregatedPerList['Doing'] || [],
+
+    organisation: formattedOrg,
   };
 }
 

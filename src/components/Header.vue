@@ -1,7 +1,12 @@
 <template>
   <section id="header">
     <span class="menu-item">{{day}}</span>
-    <span class="menu-item">{{time}}</span>
+    <span
+      class="menu-item"
+      v-if="$store.getters.organisation"
+    >
+      {{$store.getters.organisation.name}}
+    </span>
     <Menu :show="show" @menu-display="display" />
     <span class="menu-display" @click="display">
       {{show ? 'close' : 'menu'}}
@@ -21,17 +26,9 @@ export default {
   },
   data() {
     return {
-      time: moment().format('HH:mm'),
       day: moment().format('DD MMM YYYY'),
       show: false,
     }
-  },
-  mounted: function() {
-    var self = this;
-
-    setInterval(function() {
-      self.time = moment().format('HH:mm'); 
-    }, 60000);
   },
   methods: {
     display: function() {
