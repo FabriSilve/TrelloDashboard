@@ -51,9 +51,10 @@ export default {
 }
 
 .menu-item {
-  width: 15%;
+  width: 10rem;
   display: flex;
   justify-content: center;
+  align-items: center;
 }
 .menu-item:first-child {
   justify-content: flex-start;

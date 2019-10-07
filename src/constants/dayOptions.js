@@ -45,7 +45,7 @@ const dayOptions = {
     fontSize: '22px',
     position: 'bottom',
     // offsetX: 170,
-    // offsetY: 60,
+    offsetY: 60,
     // width: 100,
     labels: {
       useSeriesColors: true,
