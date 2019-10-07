@@ -16,7 +16,7 @@
           <div class="box pt-2 mt-2">
             <apexchart
               v-if="$store.getters.isWorkingDay"
-              height="530"
+              height="430"
               type=radialBar
               :options="{ ...dayOptions, labels: $store.getters.dayLabels }"
               :series="$store.getters.daySeries"
