@@ -8,8 +8,8 @@ const dayOptions = {
   },
   plotOptions: {
     radialBar: {
-      startAngle: 30,
-      endAngle: 330,
+      startAngle: 0,
+      endAngle: 365,
       hollow: {
         size: '45%',
         background: 'transparent',
@@ -43,10 +43,10 @@ const dayOptions = {
     show: true,
     floating: true,
     fontSize: '22px',
-    position: 'left',
-    offsetX: 170,
-    offsetY: 60,
-    width: 100,
+    position: 'bottom',
+    // offsetX: 170,
+    // offsetY: 60,
+    // width: 100,
     labels: {
       useSeriesColors: true,
     },
