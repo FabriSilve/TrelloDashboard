@@ -1,11 +1,11 @@
 <template>
   <section id="fog"> 
     <div class="loader">
-      <div />
-      <div />
-      <div />
-      <div />
-      <div />
+      <div v-bind:class="{ animated: $store.getters.loading }" />
+      <div v-bind:class="{ animated: $store.getters.loading }" />
+      <div v-bind:class="{ animated: $store.getters.loading }" />
+      <div v-bind:class="{ animated: $store.getters.loading }" />
+      <div v-bind:class="{ animated: $store.getters.loading }" />
     </div>
     <span>Trello Dashboard</span>
   </section>
@@ -47,28 +47,38 @@ export default {
   margin: 0 5px;
   width: 25px;
   background: #fff;
-  animation: loader 1.5s infinite;
 }
+
 .loader div:nth-child(1) {
   left: 6px;
   animation-delay: -0.80s;
+  height: 35px;
 }
 .loader div:nth-child(2) {
   left: 26px;
   animation-delay: -0.60s;
+  height: 55px;
 }
 .loader div:nth-child(3) {
   left: 45px;
   animation-delay: -0.40s;
+  height: 85px;
 }
 .loader div:nth-child(4) {
   left: 45px;
   animation-delay: -0.20s;
+  height: 45px;
 }
 .loader div:nth-child(5) {
   left: 45px;
   animation-delay: 0;
+  height: 65px;
 }
+
+.animated {
+  animation: loader 1.5s infinite;
+}
+
 @keyframes loader {
   0% {
     height: 25px;
