@@ -104,7 +104,7 @@ export default {
 
 .no-work {
   border: 1px solid grey;
-  margin: 45% auto;
+  margin: 35% auto;
   padding: 1rem;
   width: 95%;
   display: flex;
