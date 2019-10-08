@@ -1,11 +1,14 @@
 <template>
   <section id="header">
     <span class="menu-item">{{day}}</span>
-    <span
-      class="menu-item"
-      v-if="$store.getters.organisation"
-    >
-      {{$store.getters.organisation.name}}
+    <span class="menu-item">
+      <span v-if="$store.getters.organisation" >
+        {{$store.getters.organisation.name}}
+      </span>
+      <span v-if="$store.getters.organisation && $store.getters.currentSprint" >&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+      <span v-if="$store.getters.currentSprint" >
+        {{$store.getters.currentSprint}}
+      </span>
     </span>
     <Menu :show="show" @menu-display="display" />
     <span class="menu-display" @click="display">
@@ -51,7 +54,6 @@ export default {
 }
 
 .menu-item {
-  width: 10rem;
   display: flex;
   justify-content: center;
   align-items: center;

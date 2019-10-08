@@ -10,6 +10,7 @@ import cardsPoints from './cardsPoints';
 import getLastList from './getLastList';
 import getSprintPoints from './getSprintPoints';
 import getSprintLabels from './getSprintLabels';
+import getListNumber from './getListNumber';
 
 
 const SPRINT_LISTS = ['Sprint Backlog', 'Doing', 'Blocked', 'To Validate', 'Validated'];
@@ -145,6 +146,7 @@ async function analyze(boardId) {
     doingTickets: aggregatedPerList['Doing'] || [],
 
     organisation: formattedOrg,
+    currentSprint: `Sprint ${getListNumber(lastDoneList)}`,
   };
 }
 

@@ -36,7 +36,9 @@ const store = new Vuex.Store({
     blockedTickets: state => state.analysis.blockedTickets,
     toValidateTickets: state => state.analysis.toValidateTickets,
     doingTickets: state => state.analysis.doingTickets,
+
     organisation: state => state.analysis.organisation,
+    currentSprint: state => state.analysis.currentSprint,
   }
 })
 
