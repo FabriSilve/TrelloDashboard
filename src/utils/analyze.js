@@ -20,30 +20,35 @@ const formatOrg = (org) => ({
   url: org.url,
 });
 
-const formatMember = (member) => ({
-  id: member.id,
-  initials: member.initials,
-});
+// const formatMember = (member) => ({
+//   id: member.id,
+//   initials: member.initials,
+// });
 
-const getMembersMap = (members) => members
-  .reduce(
-    (res, m) => {
-      res[m.id] = formatMember(m);
-      return res;
-    },
-    {},
-  );
+// const getMembersMap = (members) => members
+//   .reduce(
+//     (res, m) => {
+//       res[m.id] = formatMember(m);
+//       return res;
+//     },
+//     {},
+//   );
 
-const getMembersPoints = (cards) => cards
-  .filter(({ list }) => /^done.*$/i.test(list))
-  .reduce((map, { points, members }) => {
-    if (!members.length) return map;
-    members.forEach((m) => {
-      if (map[m]) map[m] += points;
-      else map[m] = points;
-    })
-    return map;
-  }, {});
+// const getMembersPoints = (cards) => cards
+//   .filter(({ list }) => /^done.*$/i.test(list))
+//   .reduce((map, { points, members }) => {
+//     if (!members.length) return map;
+//     members.forEach((m) => {
+//       if (map[m]) map[m] += points;
+//       else map[m] = points;
+//     })
+//     return map;
+//   }, {});
+
+function getPreviousWorkday() {
+  return [1, 2, 3, 4, 5].indexOf(moment().subtract(1, 'day').day()) > -1 ?
+    moment().subtract(1, 'day') : moment(moment().day(-2));
+}
 
 
 async function analyze(boardId) {
@@ -64,14 +69,14 @@ async function analyze(boardId) {
     : {};
   const formattedOrg = formatOrg(rowOrg);
 
-  const members = await Trello.get(
-    `/boards/${boardId}/members`,
-    {
-      fields: 'id,fullName,avatarUrl,initials',
-    },
-  )
+  // const members = await Trello.get(
+  //   `/boards/${boardId}/members`,
+  //   {
+  //     fields: 'id,fullName,avatarUrl,initials',
+  //   },
+  // )
 
-  const membersMap = getMembersMap(members);
+  // const membersMap = getMembersMap(members);
 
   const { lists, cards } = board;
   const listsMap = getListsMap(lists);
@@ -86,14 +91,21 @@ async function analyze(boardId) {
   const trendMediaData = getMediaSerie(trendPointsData);
 
   const today = moment().format('YYYYMMDD');
-  const membersPoint = getMembersPoints(aggregatedPerDay[today] || []);
+  const yesterday = getPreviousWorkday().format('YYYYMMDD');
+  // const membersPoint = getMembersPoints(aggregatedPerDay[today] || []);
 
   const lastMedia = trendMediaData[trendMediaData.length -1][1];
-  const todayData = Object.keys(membersPoint)
-    .map((v) => [
-      membersMap[v].initials,
-      membersPoint[v] / lastMedia * 100,
-    ]);
+  const todayPoints = cardsPoints(aggregatedPerDay[today] || [], /^done.*$/i);
+  const todayData = Math.ceil(todayPoints / lastMedia * 100);
+  const secondLastMedia = trendMediaData[trendMediaData.length - 2][1];
+  const yesterdayPoints = cardsPoints(aggregatedPerDay[yesterday] || [], /^done.*$/i);
+  const yesterdayData = Math.ceil(yesterdayPoints / secondLastMedia * 100);
+
+  // const todayData = Object.keys(membersPoint)
+  //   .map((v) => [
+  //     membersMap[v].initials,
+  //     membersPoint[v] / lastMedia * 100,
+  //   ]);
 
   const lastDoneList = getLastList(aggregatedPerList);
   const sprintLists = [...SPRINT_LISTS, lastDoneList];
@@ -117,9 +129,11 @@ async function analyze(boardId) {
       data: defectPointsData,
     }],
   
-    isWorkingDay: todayData.length > 0,
-    daySeries: todayData.length ? todayData.map(([_,p]) => p) : [0],
-    dayLabels: todayData.map(([n]) => n),
+    isWorkingDay: todayData > 0,
+    daySeries: [todayData, yesterdayData],
+    dayLabels: ['Today', 'Yesterday'],
+    // daySeries: todayData.length ? todayData.map(([_,p]) => p) : [0],
+    // dayLabels: todayData.map(([n]) => n),
   
     topicsSeries: [{ data: Object.values(sprintLabels) }],
     topicsLabels: Object.keys(sprintLabels),
