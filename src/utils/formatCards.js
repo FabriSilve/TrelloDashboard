@@ -23,6 +23,7 @@ const formatCards = (cards, listsMap) => cards
       labels: formattedLabels,
       url: card.url,
       members: card.idMembers,
+      description: card.desc,
       day: moment(card.dateLastActivity),
     };
   }, [])

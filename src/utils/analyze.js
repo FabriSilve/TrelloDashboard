@@ -57,7 +57,7 @@ async function analyze(boardId) {
     `/boards/${boardId}`,
     {
       cards: 'open',
-      card_fields: 'dateLastActivity,name,shortUrl,labels,idList,idMembers,id,url',
+      card_fields: 'dateLastActivity,name,shortUrl,labels,idList,idMembers,id,url,desc',
       filter: 'open',
       fields: 'cards,name,idOrganization',
       lists: 'open',
