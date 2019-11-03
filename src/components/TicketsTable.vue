@@ -1,11 +1,11 @@
 <template>
   <div
     id="tickets-table"
-    v-bind:class="{ alert: isAlert }"
   >
     <div
       id="warnings-tickets"
       v-if="mainTickets.length > 0"
+      v-bind:class="{ alert: isAlert }"
     >
       <div class="title">
         <span>{{listTitle}}</span>
@@ -78,8 +78,8 @@ export default {
   align-items: stretch;
   justify-content: flex-start;
   padding: 2%;
-  height: 100%;
-  width: 100%;
+  height: 96%;
+  width: 96%;
 }
 
 .title {
@@ -94,7 +94,7 @@ export default {
 
 .tickets-list {
   width: 100%;
-  height: 350px;
+  height: inherit;
   overflow-y: scroll;
   scrollbar-width: none;
   display: flex;

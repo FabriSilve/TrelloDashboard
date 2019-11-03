@@ -1,13 +1,9 @@
 <template>
-  <!-- <apexchart
-    :options="options"
-    :series="series"
-    width="430"
-  /> -->
   <apexchart
     :options="options"
     :series="series"
     :width="width"
+    :height="height"
   />
 </template>
 
@@ -19,13 +15,24 @@ export default {
       return `${this.widthUnit * 58}`;
     },
     height: function() {
-      return `${this.heigthUnit * 60}`;
+      return `${this.heightUnit * 60}`;
     },
     options: function() {
       return {
         stroke: {
           curve: 'straight',
         },
+        colors: [
+          '#0DFE01',
+          // function({ value, seriesIndex, w }) {
+          //   if (value < 111) {
+          //       return '#7E36AF'
+          //   } else {
+          //       return '#D9534F'
+          //   }
+          // },
+          '#FE3001',
+        ],
         fill: { opacity: [0.4, 1] },
         markers: { size: [0, 3] },
         xaxis: {

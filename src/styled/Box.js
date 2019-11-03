@@ -17,7 +17,6 @@ const Box = styled('div', props)`
   width: ${({ width }) => width || '50%'};
   height: ${({ height }) => height || '50%'};
   padding: ${({ padding }) => padding || '0'}; 
-  border: 1px solid black;
 `;
 
 export default Box;

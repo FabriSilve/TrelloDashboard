@@ -22,11 +22,18 @@ export default {
         plotOptions: {
           bar: {
             horizontal: false,
-            columnWidth: '25%',
+            columnWidth: '15%',
             endingShape: 'rounded',
           },
         },
-        fill: { opacity: [1, 0.4, 1] },
+        colors: ['#0169FE', '#fea601'],
+        stroke: {
+          curve: ['smooth', 'straight'],
+          width: [2,3,1],
+        },
+        fill: {
+          opacity: [0.4, 1, 1],
+        },
         markers: { size: 0 },
         xaxis: {
           type: 'datetime',

@@ -115,10 +115,10 @@ export default {
   z-index: 2;
 }
 #menu {
-  width: 300px;
-  height: 80%;
+  width: 350px;
+  height: 100vh;
   position: fixed;
-  top: 7%;
+  top: 0;
   right: 0;
   padding: 1rem;
   background:rgba(106, 106, 216, 0.8);
