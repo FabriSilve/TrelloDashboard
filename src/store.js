@@ -1,11 +1,14 @@
-import Vue from 'vue'
-import Vuex from 'vuex'
+import Vue from 'vue';
+import Vuex from 'vuex';
+
+import demo from './demo/analysis';
 
 Vue.use(Vuex)
 
 const store = new Vuex.Store({
   state: {
     loading: 0,
+    demo,
     analysis: {
       analyzed: false,
     }
@@ -23,6 +26,7 @@ const store = new Vuex.Store({
   },
   getters: {
     loading: state => state.loading,
+    demo: state => state.demo,
 
     analysis: state => state.analysis,
     analyzed: state => state.analysis.analyzed,
