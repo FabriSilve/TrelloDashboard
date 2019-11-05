@@ -1,5 +1,8 @@
 <template>
-  <div id="menu" v-if="show">
+  <div
+    id="menu"
+    v-if="show"
+  >
     <p>Menu</p>
     <button v-if="token" @click="logout">Logout</button>
     <button v-if="!!board" @click="refresh">Refresh Data</button>

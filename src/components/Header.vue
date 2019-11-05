@@ -1,18 +1,16 @@
 <template>
   <section id="header">
-    <span class="menu-item">{{day}}</span>
+    <span class="menu-item big">{{day}}</span>
     <span class="menu-item">
-      <span v-if="$store.getters.organisation" >
+      <span v-if="$store.getters.organisation" class="big">
         {{$store.getters.organisation.name}}
       </span>
-      <span v-if="$store.getters.organisation && $store.getters.currentSprint" >&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-      <span v-if="$store.getters.currentSprint" >
+      <span v-if="$store.getters.organisation" class="big">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+      <span v-if="$store.getters.currentSprint" class="big">
         {{$store.getters.currentSprint}}
       </span>
-    </span>
-    <Menu :show="show" @menu-display="display" />
-    <span class="menu-display" @click="display">
-      {{show ? 'close' : 'menu'}}
+      <span v-if="$store.getters.currentSprint" class="big" >&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+      <Settings />
     </span>
   </section>
 </template>
@@ -20,24 +18,18 @@
 <script>
 import moment from 'moment';
 
-import Menu from './Menu';
+import Settings from './Settings';
 
 export default {
   name: 'Header',
   components: {
-    Menu,
+    Settings,
   },
   data() {
     return {
-      day: moment().format('DD MMM YYYY'),
-      show: false,
+      day: moment().format('ddd DD MMM YYYY'),
     }
   },
-  methods: {
-    display: function() {
-      this.show = !this.show;
-    },
-  }
 }
 </script>
 
@@ -58,6 +50,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
+.big {
+  font-size: 26px;
+}
+
 .menu-item:first-child {
   justify-content: flex-start;
 }

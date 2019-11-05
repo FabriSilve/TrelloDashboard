@@ -88,7 +88,7 @@ export default {
 .number, .since {
   padding: 1px 5px;
   background: #374462;
-  /* border-radius: 4px; */
+  border: 1px solid grey;
 }
 
 .points {
