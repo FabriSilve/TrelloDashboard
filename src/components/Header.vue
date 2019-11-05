@@ -10,34 +10,25 @@
         {{$store.getters.currentSprint}}
       </span>
     </span>
-    <Menu :show="show" @menu-display="display" />
-    <span class="menu-display" @click="display">
-      {{show ? 'close' : 'menu'}}
-    </span>
+    <Settings />
   </section>
 </template>
 
 <script>
 import moment from 'moment';
 
-import Menu from './Menu';
+import Settings from './Settings';
 
 export default {
   name: 'Header',
   components: {
-    Menu,
+    Settings,
   },
   data() {
     return {
       day: moment().format('DD MMM YYYY'),
-      show: false,
     }
   },
-  methods: {
-    display: function() {
-      this.show = !this.show;
-    },
-  }
 }
 </script>
 
