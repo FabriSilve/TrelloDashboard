@@ -4,49 +4,33 @@
       <div class="row mt-4">
         <div class="col-md-8">
           <div class="box pt-2 mt-2">
-            <apexchart
-            v-if="$store.getters.trendSeries"
-            height="430"
-            :options="trendOptions"
-            :series="$store.getters.trendSeries"
-          />
+            <TrendChart
+              :series="$store.getters.trendSeries"
+            />
           </div>
         </div>
         <div class="col-md-4">
           <div class="box pt-2 mt-2">
-            <apexchart
-              v-if="$store.getters.isWorkingDay"
-              height="430"
-              type=radialBar
-              :options="{ ...dayOptions, labels: $store.getters.dayLabels }"
+            <RadialChart
               :series="$store.getters.daySeries"
+              :labels="$store.getters.dayLabels"
             />
-            <div v-else class="no-work">
-              Not work done today
-            </div>
           </div>
         </div>
       </div>
       <div class="row mt-4">
         <div class="col-md-4">
           <div class="box pt-2">
-            <apexchart
-              v-if="$store.getters.sprintSeries"
-              type=bar
-              height="430"
-              :options="sprintOptions"
+            <BarChart
               :series="$store.getters.sprintSeries"
             />
           </div>
         </div>
         <div class="col-md-4">
           <div class="box pt-2">
-            <apexchart
-              v-if="$store.getters.topicsSeries"
-              type="radar"
-              height="430"
-              :options="{ ...topicsOptions, labels: $store.getters.topicsLabels }"
+            <RadarChart
               :series="$store.getters.topicsSeries"
+              :labels="$store.getters.topicsLabels"
             />
           </div>
         </div>
@@ -66,10 +50,10 @@
 </template>
 
 <script>
-import trendOptions from '../constants/trendOptions'
-import dayOptions from '../constants/dayOptions'
-import sprintOptions from '../constants/sprintOptions'
-import topicsOptions from '../constants/topicsOptions'
+import BarChart from './charts/BarChart';
+import RadarChart from './charts/RadarChart';
+import TrendChart from './charts/TrendChart';
+import RadialChart from './charts/RadialChart';
 
 import TicketsTable from './TicketsTable';
 
@@ -77,13 +61,13 @@ export default {
   name: 'dashboard',
   components: {
     TicketsTable,
+    BarChart,
+    RadarChart,
+    TrendChart,
+    RadialChart,
   },
   data() {
     return {
-      trendOptions,
-      dayOptions,
-      sprintOptions,
-      topicsOptions,
     }
   }
 }
