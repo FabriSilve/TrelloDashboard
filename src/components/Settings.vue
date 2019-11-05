@@ -6,9 +6,9 @@
     />
     <svg
       @click="display"
-      class="pointer"
-      height="30px"
-      width="30px"
+      class="gear"
+      height="35px"
+      width="35px"
       id="Layer_1"
       style="enable-background:new 0 0 512 512;"
       version="1.1"
@@ -41,7 +41,9 @@ export default {
 </script>
 
 <style scoped>
-.pointer {
+.gear {
   cursor: pointer;
+  margin: 0;
+  display: flex;
 }
 </style>

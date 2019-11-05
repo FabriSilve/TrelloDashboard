@@ -1,16 +1,17 @@
 <template>
   <section id="header">
-    <span class="menu-item">{{day}}</span>
+    <span class="menu-item big">{{day}}</span>
     <span class="menu-item">
-      <span v-if="$store.getters.organisation" >
+      <span v-if="$store.getters.organisation" class="big">
         {{$store.getters.organisation.name}}
       </span>
-      <span v-if="$store.getters.organisation && $store.getters.currentSprint" >&nbsp;&nbsp;|&nbsp;&nbsp;</span>
-      <span v-if="$store.getters.currentSprint" >
+      <span v-if="$store.getters.organisation" class="big">&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+      <span v-if="$store.getters.currentSprint" class="big">
         {{$store.getters.currentSprint}}
       </span>
+      <span v-if="$store.getters.currentSprint" class="big" >&nbsp;&nbsp;|&nbsp;&nbsp;</span>
+      <Settings />
     </span>
-    <Settings />
   </section>
 </template>
 
@@ -26,7 +27,7 @@ export default {
   },
   data() {
     return {
-      day: moment().format('DD MMM YYYY'),
+      day: moment().format('ddd DD MMM YYYY'),
     }
   },
 }
@@ -49,6 +50,11 @@ export default {
   justify-content: center;
   align-items: center;
 }
+
+.big {
+  font-size: 26px;
+}
+
 .menu-item:first-child {
   justify-content: flex-start;
 }
