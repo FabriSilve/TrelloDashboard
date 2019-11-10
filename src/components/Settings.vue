@@ -1,5 +1,5 @@
 <template>
-  <span>
+  <span class="settings-container">
     <Menu
       :show="show"
       @menu-display="display"
@@ -45,5 +45,11 @@ export default {
   cursor: pointer;
   margin: 0;
   display: flex;
+}
+
+.settings-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>
