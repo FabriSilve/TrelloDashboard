@@ -1,4 +1,4 @@
-const FORMAT = /^\([0-9]+\).*$/;
+const FORMAT = /^\([0-9]+(\.\d+)?\).*$/;
 const EXTRACT_NAME = /\(.+\)/;
 
 const extractName = (name) => FORMAT.test(name)
