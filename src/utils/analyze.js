@@ -51,6 +51,10 @@ function getPreviousWorkday() {
     moment().subtract(1, 'day') : moment(moment().day(-2));
 }
 
+function getSprintsConfig(cards) {
+  return cards.filter(({ name }) => name === '#SPRINT#');
+}
+
 
 async function analyze(boardId) {
   const board = await Trello.get(
