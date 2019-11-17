@@ -11,7 +11,12 @@
         </div>
         <div class="col-md-4">
           <div class="box pt-2 mt-2">
+            <BurnChart
+              v-if="$store.getters.analysis.advanced"
+              :series="$store.getters.analysis.advanceSeries"
+            />
             <RadialChart
+              v-else
               :series="$store.getters.daySeries"
               :labels="$store.getters.dayLabels"
             />
@@ -54,6 +59,7 @@ import BarChart from './charts/BarChart';
 import RadarChart from './charts/RadarChart';
 import TrendChart from './charts/TrendChart';
 import RadialChart from './charts/RadialChart';
+import BurnChart from './charts/BurnChart';
 
 import TicketsTable from './TicketsTable';
 
@@ -65,6 +71,7 @@ export default {
     RadarChart,
     TrendChart,
     RadialChart,
+    BurnChart,
   },
   data() {
     return {

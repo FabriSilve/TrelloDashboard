@@ -21,6 +21,21 @@ const formatOrg = (org) => ({
   url: org.url,
 });
 
+const formatConfigCard = (card) => {
+  if (!card.desc) throw new Error('Config: missing description');
+  const json = JSON.parse(card.desc);
+  const start = moment(json.start, 'MM/DD/YYYY').hours(9).minutes(15);
+  const end = moment(json.end, 'MM/DD/YYYY').hours(9).minutes(15);
+  if (start.isAfter(end)) throw new Error('Config: invalid end date before start');
+  const days = end.diff(start, 'days') + 1;
+  if (json.devs.length !== days) throw new Error(`Config: invalid devs values. Expected ${days}`);
+  const devs = json.devs;
+  if (json.speed <= 0) throw new Error('Config: team speed cannot be less than one');
+  const speed = json.speed;
+  const goal = devs.reduce((a, v) => a + (v * speed), 0);
+  return { start, end, speed, days, devs, goal };
+}
+
 // const formatMember = (member) => ({
 //   id: member.id,
 //   initials: member.initials,
@@ -49,6 +64,10 @@ const formatOrg = (org) => ({
 function getPreviousWorkday() {
   return [1, 2, 3, 4, 5].indexOf(moment().subtract(1, 'day').day()) > -1 ?
     moment().subtract(1, 'day') : moment(moment().day(-2));
+}
+
+function getSprintsConfig(cards) {
+  return cards.filter(({ name }) => name === '#SPRINT#');
 }
 
 
@@ -114,6 +133,42 @@ async function analyze(boardId) {
   const sprintData = getSprintPoints(aggregatedPerList, sprintLists);
   const sprintLabels = getSprintLabels(formattedCards, sprintLists);
 
+  // Burndown chart
+  let hasSprintConfigs = false;
+  const burndownGoal = [];
+  const burndownPoints = [];
+  try {
+    const sprintConfigCard = getSprintsConfig(cards)
+      .find((c) => listsMap[c.idList] === lastDoneList);
+    hasSprintConfigs = !!sprintConfigCard;
+
+    if (hasSprintConfigs) {
+      const conf = formatConfigCard(sprintConfigCard);
+      for (let index = 0; index <= conf.days; index += 1) {
+        const xDay = moment(conf.start).add(index, 'days');
+        burndownGoal.push({
+          x: xDay.format('MM/DD/YYYY'),
+          y: conf.goal - conf.devs.slice(0, index).reduce((a, v) => a + (v * conf.speed), 0),
+        });
+        if (moment().isAfter(xDay)) {
+          const pointsCheck = index === conf.days
+            ? (day) => day.isAfter(conf.start)
+            : (day) => day.isAfter(conf.start) && day.isBefore(moment(conf.start).add(index, 'days'));
+          burndownPoints.push({
+            x: xDay.format('MM/DD/YYYY'),
+            y: conf.goal - aggregatedPerList[lastDoneList].reduce(
+              (sum, t) => pointsCheck(t.day) ? sum + t.points : sum,
+              0,
+            ),
+          });
+        }
+      }
+    }
+  } catch (e) {
+    console.log(e);
+    hasSprintConfigs = false;
+  }
+
   return {
     analyzed: true,
     trendSeries: [{
@@ -135,6 +190,17 @@ async function analyze(boardId) {
     dayLabels: ['Today', 'Yesterday'],
     // daySeries: todayData.length ? todayData.map(([_,p]) => p) : [0],
     // dayLabels: todayData.map(([n]) => n),
+
+    advanced: hasSprintConfigs,
+    advanceSeries: [{
+      name: 'Points',
+      type: 'area',
+      data: burndownPoints,
+    }, {
+      name: 'Goal',
+      type: 'line',
+      data: burndownGoal,
+    }],
   
     topicsSeries: [{ data: Object.values(sprintLabels) }],
     topicsLabels: Object.keys(sprintLabels),
