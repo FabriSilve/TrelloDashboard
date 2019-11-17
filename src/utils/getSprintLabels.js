@@ -1,4 +1,4 @@
-const LABELS_TO_IGNORE = ['Defect', 'Blocked', 'Priority - High'];
+const LABELS_TO_IGNORE = ['Defect', 'Blocked', 'Priority - High', 'Back from validation'];
 
 const getSprintLabels = (cards, lists) => cards
   .filter(({ list }) => lists.includes(list))
