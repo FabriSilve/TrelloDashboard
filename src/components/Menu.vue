@@ -48,6 +48,7 @@ export default {
       board: '',
       lists: [],
       token: null,
+      worker: null,
     }
   },
   mounted: function() {
@@ -101,7 +102,8 @@ export default {
       this.$store.commit('loadingStart');
       this.runAnalysis();
       var self = this;
-      setInterval(function() {
+      clearInterval(this.worker);
+      this.worker = setInterval(function() {
         self.runAnalysis(); 
       }, 60000);
       this.hide();
