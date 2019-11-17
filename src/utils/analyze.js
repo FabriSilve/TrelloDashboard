@@ -118,6 +118,61 @@ async function analyze(boardId) {
   const sprintData = getSprintPoints(aggregatedPerList, sprintLists);
   const sprintLabels = getSprintLabels(formattedCards, sprintLists);
 
+  let hasSprintConfigs;
+  const advanceGoal = [];
+  const advancePoints = [];
+  try {
+    // SPRINT BURNCHART
+    const sprintConfigs = getSprintsConfig(cards);
+    hasSprintConfigs = sprintConfigs
+      && sprintConfigs.length
+      && listsMap[sprintConfigs[0].idList] === lastDoneList;
+    
+    const configs = {
+      start: '11/12/2019',
+      end: '11/14/2019',
+      speed: 12,
+      devs: [3, 3, 3],
+    };
+    const days = moment(configs.end, 'MM/DD/YYYY').diff(moment(configs.start, 'MM/DD/YYYY'), 'days') + 1;
+
+    const sprintGoal = configs.devs.reduce((a, d) => a + (d * configs.speed) );
+    advanceGoal.push({
+      x: moment(configs.start).hours(9).minutes(30),
+      y: sprintGoal,
+    });
+    advancePoints.push({
+      x: moment(configs.start),
+      y: sprintGoal,
+    });
+    console.log(sprintGoal, sprintGoal, 0, sprintGoal)
+    let i = 0;
+    let previousGoal = sprintGoal;
+    for (let index = days - 1; index > 0; index -= 1) {
+      const date = moment(configs.start).add(days - index, 'days').hours(9).minutes(30);
+      const formattedDate = date.format('MM/DD/YYYY');
+      const goalPoints = previousGoal - configs.speed * configs.devs[i];
+      previousGoal = goalPoints;
+      advanceGoal.push({
+        x: formattedDate,
+        y: goalPoints,
+      });
+      const points = aggregatedPerList[lastDoneList]
+        .reduce((sum, card) => (date.isAfter(card.day)
+          ? sum + card.points
+          : sum
+        ), 0);
+      console.log(goalPoints, sprintGoal, points, sprintGoal - points)
+      advancePoints.push({
+        x: formattedDate,
+        y: sprintGoal - points,
+      })
+      i += 1;
+    }
+  } catch (e) {
+    console.error(e)
+  }
+  
   return {
     analyzed: true,
     trendSeries: [{
@@ -139,6 +194,17 @@ async function analyze(boardId) {
     dayLabels: ['Today', 'Yesterday'],
     // daySeries: todayData.length ? todayData.map(([_,p]) => p) : [0],
     // dayLabels: todayData.map(([n]) => n),
+
+    advanced: hasSprintConfigs || true,
+    advanceSeries: [{
+      name: 'Points',
+      type: 'area',
+      data: advancePoints,
+    }, {
+      name: 'Goal',
+      type: 'line',
+      data: advanceGoal,
+    }],
   
     topicsSeries: [{ data: Object.values(sprintLabels) }],
     topicsLabels: Object.keys(sprintLabels),
