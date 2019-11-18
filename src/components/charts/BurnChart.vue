@@ -68,14 +68,14 @@ export default {
               || dataPointIndex === 0
             ) return '';
             if (points === null) return '';
-            if (value - points < 0) return `Late: ${value - points}`;
-            if (value - points > 0) return `Ahead: ${value - points}`;
+            if (value - points < 0) return `${value - points}`;
+            if (value - points > 0) return `+${value - points}`;
             return '';
           },
           offsetX: -80,
           offsetY: -10,
           style: {
-            fontSize: '16px',
+            fontSize: '18px',
             colors: ['#F86624']
         },
         },
