@@ -59,12 +59,15 @@ export default {
           enabled: true,
           textAnchor: 'start',
           formatter: function(value, { seriesIndex, dataPointIndex, w }) {
-            const points = w.config.series[0].data[dataPointIndex].y;
+            const points = w.config.series[0].data[dataPointIndex]
+              ? w.config.series[0].data[dataPointIndex].y
+              : null;
             const goalSerie = w.config.series[seriesIndex];
             if (
               goalSerie.name !== 'Goal'
               || dataPointIndex === 0
             ) return '';
+            if (points === null) return '';
             if (value - points < 0) return `Late: ${value - points}`;
             if (value - points > 0) return `Ahead: ${value - points}`;
             return '';
