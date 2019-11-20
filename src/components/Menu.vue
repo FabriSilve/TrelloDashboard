@@ -15,7 +15,7 @@
       <option value="" disabled selected>Select the board</option>
       <option
         v-for="board in boards"
-        :value="board"
+        :value="board.id"
         :key="board.id"
         :disabled="board.closed"
         >
@@ -34,6 +34,7 @@ import demoAnalysis from '../demo/analysis';
 import analyze from '../utils/analyze';
 
 import trello from '../api/trello';
+import service from '../api/service';
 
 
 export default {
@@ -55,27 +56,39 @@ export default {
     this.checkToken();
   },
   methods: {
-    logout: function() {
-      trello.logout();
-    },
-    refresh: function() {
-      this.$store.commit('loadingStart')
-      this.runAnalysis();
-      this.hide();
-    },
-    authenticate: async function() {
-      this.$store.commit('loadingStart')
-      await trello.authenticate();
-      this.$store.commit('loadingEnd')
+    checkToken: function() {
+      if (!!service.checkToken()) {
+        this.getBoards();
+        if (service.board) this.board = service.board;
+      }
+      var self = this;
+      setTimeout(function() {
+        self.checkToken();
+      }, 1000);
     },
     getBoards: async function () {
       this.$store.commit('loadingEnd')
       const result = await trello.getBoards();
       this.boards = result.map(({ id, name, closed }) => ({ id, name, closed }))
     },
-    runAnalysis: async function () {
+    logout: function() {
+      trello.logout();
+      service.clear();
+    },
+    refresh: function() {
+      this.$store.commit('loadingStart')
+      this.runAnalysis(this.board);
+      this.hide();
+    },
+    authenticate: async function() {
+      this.$store.commit('loadingStart')
+      await trello.authenticate();
+      service.checkToken();
+      this.$store.commit('loadingEnd')
+    },
+    runAnalysis: async function (boardId) {
       try {
-        const analysis = await analyze(this.board.id);
+        const analysis = await analyze(boardId);
         this.$store.commit('updateAnalysis', analysis);
       } catch (e) {
         this.clearStorage;
@@ -88,29 +101,22 @@ export default {
     hide () {
       this.$emit('menu-display')
     },
-    checkToken: function() {
-      const authToken = localStorage.getItem('trello_token');
-      if (!!authToken) return this.token = authToken;
-      var self = this;
-      setTimeout(function() {
-        self.checkToken();
-      }, 1000);
-    }
   },
   watch: {
     board: function() {
       this.$store.commit('loadingStart');
-      this.runAnalysis();
+      service.saveBoard(this.board);
+      this.runAnalysis(this.board);
       var self = this;
       clearInterval(this.worker);
       this.worker = setInterval(function() {
-        self.runAnalysis(); 
+        self.runAnalysis(this.board); 
       }, 60000);
       this.hide();
     },
-    token: function() {
-      this.getBoards();
-    }
+    // token: function() {
+    //   this.getBoards();
+    // }
   },
 }
 </script>
