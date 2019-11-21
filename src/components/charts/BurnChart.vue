@@ -8,7 +8,7 @@
 
 <script>
 export default {
-  props: ['series', 'widthUnit', 'heightUnit'],
+  props: ['series', 'title', 'widthUnit', 'heightUnit'],
   computed: {
     width: function() {
       return `${this.widthUnit * 40}`;
@@ -26,7 +26,7 @@ export default {
           curve: 'straight',
         },
         title: {
-          text: 'Sprint Burndown',
+          text: this.title,
           align: 'center',
         },
         xaxis: {
