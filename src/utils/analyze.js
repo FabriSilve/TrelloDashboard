@@ -33,7 +33,16 @@ const formatConfigCard = (card) => {
   if (json.speed <= 0) throw new Error('Config: team speed cannot be less than one');
   const speed = json.speed;
   const goal = devs.reduce((a, v) => a + (v * speed), 0);
-  return { start, end, speed, days, devs, goal };
+  const title = json.title;
+  return {
+    start,
+    end,
+    speed,
+    days,
+    devs,
+    goal,
+    title,
+  };
 }
 
 // const formatMember = (member) => ({
@@ -137,6 +146,7 @@ async function analyze(boardId) {
   let hasSprintConfigs = false;
   const burndownGoal = [];
   const burndownPoints = [];
+  let advanceTitle = 'Sprint Burndown';
   try {
     const sprintConfigCard = getSprintsConfig(cards)
       .find((c) => listsMap[c.idList] === lastDoneList);
@@ -144,6 +154,7 @@ async function analyze(boardId) {
 
     if (hasSprintConfigs) {
       const conf = formatConfigCard(sprintConfigCard);
+      advanceTitle = conf.title || advanceTitle;
       for (let index = 0; index <= conf.days; index += 1) {
         const xDay = moment(conf.start).add(index, 'days');
         burndownGoal.push({
@@ -201,6 +212,7 @@ async function analyze(boardId) {
       type: 'line',
       data: burndownGoal,
     }],
+    advanceTitle,
   
     topicsSeries: [{ data: Object.values(sprintLabels) }],
     topicsLabels: Object.keys(sprintLabels),

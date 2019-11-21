@@ -14,6 +14,7 @@
             <BurnChart
               v-if="$store.getters.analysis.advanced"
               :series="$store.getters.analysis.advanceSeries"
+              :title="$store.getters.analysis.advanceTitle"
             />
             <RadialChart
               v-else
