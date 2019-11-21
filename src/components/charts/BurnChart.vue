@@ -57,7 +57,7 @@ export default {
         },
         dataLabels: {
           enabled: true,
-          textAnchor: 'start',
+          textAnchor: 'middle',
           formatter: function(value, { seriesIndex, dataPointIndex, w }) {
             const points = w.config.series[0].data[dataPointIndex]
               ? w.config.series[0].data[dataPointIndex].y
@@ -68,16 +68,17 @@ export default {
               || dataPointIndex === 0
             ) return '';
             if (points === null) return '';
-            if (value - points < 0) return `${value - points}`;
-            if (value - points > 0) return `+${value - points}`;
+            const odd = Math.round((value - points) * 10)/10;
+            if (odd < 0) return `${odd}`;
+            if (odd > 0) return `+${odd}`;
             return '';
           },
-          offsetX: -80,
-          offsetY: -10,
+          offsetX: 40,
+          offsetY: -20,
           style: {
             fontSize: '18px',
             colors: ['#F86624']
-        },
+          },
         },
       };
     },
