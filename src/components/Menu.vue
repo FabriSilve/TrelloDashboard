@@ -22,6 +22,7 @@
       {{ board.name }}
       </option>
     </select>
+    <button v-if="report && hook" @click="sendReport">Send Daily Report</button>
     <Footer />
   </div>
 </template>
@@ -38,7 +39,7 @@ import trello from '../api/trello';
 
 export default {
   name: 'Menu',
-  props: ['show'],
+  props: ['show', 'hook', 'report'],
   components: {
     Footer,
   },
@@ -95,6 +96,18 @@ export default {
       setTimeout(function() {
         self.checkToken();
       }, 1000);
+    },
+    sendReport: function() {
+      const data = {
+        mrkdwn: true,
+        icon_emoji: ':postal_horn:',
+        channel: '#test-notifications',
+        username: 'Tech Team',
+        text: this.report,
+      };
+      const xhr = new XMLHttpRequest();
+      xhr.open('POST', this.hook, false);
+      xhr.send(JSON.stringify(data));
     }
   },
   watch: {
