@@ -3,7 +3,7 @@ import moment from 'moment';
 import donePointsPerDay from '@/utils/donePointsPerDay';
 
 describe('donePointsPerDay', () => {
-  test('Should return mapped done ticket for chart', () => {
+  test.skip('Should return mapped done ticket for chart', () => {
     const aggregated = {
       '20190927': [{
         day: moment('20190927', 'YYYYMMDD'),
