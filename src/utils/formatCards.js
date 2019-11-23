@@ -12,6 +12,7 @@ const formatCards = (cards, listsMap) => cards
     ) throw new Error('Bad formatted Card!');
     const cardPoints = extractPoints(card.name);
     const cardCleanedName = extractName(card.name);
+    const isTimebox = card.name.includes('Timebox');
     const formattedLabels = card.labels && card.labels.length
       ? card.labels.map(({ name, color }) => ({ name, color }))
       : [];
@@ -25,6 +26,7 @@ const formatCards = (cards, listsMap) => cards
       members: card.idMembers,
       description: card.desc,
       day: moment(card.dateLastActivity),
+      isTimebox,
     };
   }, [])
   .filter(({ name }) => !!name)

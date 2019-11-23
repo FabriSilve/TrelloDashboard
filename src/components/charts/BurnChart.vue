@@ -73,12 +73,19 @@ export default {
             if (odd > 0) return `+${odd}`;
             return '';
           },
-          offsetX: 40,
+          offsetX: -40,
           offsetY: -20,
           style: {
             fontSize: '18px',
-            colors: ['#F86624']
+            colors: ['#FEB019']
           },
+          dropShadow: {
+            enabled: true,
+            top: 3,
+            left: -3,
+            blur: 1,
+            opacity: 1
+          }
         },
       };
     },

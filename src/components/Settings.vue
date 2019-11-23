@@ -3,6 +3,8 @@
     <Menu
       :show="show"
       @menu-display="display"
+      :report="$store.getters.analysis.report"
+      :hook="$store.getters.analysis.hook"
     />
     <svg
       @click="display"
