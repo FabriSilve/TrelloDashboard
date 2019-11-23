@@ -101,7 +101,7 @@ export default {
       const data = {
         mrkdwn: true,
         icon_emoji: ':postal_horn:',
-        channel: '#test-notifications',
+        channel: '#general',
         username: 'Tech Team',
         text: this.report,
       };
