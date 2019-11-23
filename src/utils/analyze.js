@@ -81,6 +81,64 @@ function getSprintsConfig(cards) {
   return cards.filter(({ name }) => name === '#SPRINT#');
 }
 
+function fillReport(num, goal, table, features, bugs) {
+  const nl = '\n';
+  const bugsList = bugs.length === 0
+    ? ''
+    : `${nl}*_Bug fixed_*${nl}`
+    + `${Object.keys(bugs).map(k => `> _${k}_${nl}${bugs[k].map(t => `- ${t}`).join(nl)}`).join(nl + nl)}${nl}`;
+  const doneList = Object.keys(features) === 0
+    ? ''
+    : `${nl}*_Patches released_*${nl}`
+      + `${Object.keys(features).map(k => `> _${k}_${nl}${features[k].map(t => `- ${t}`).join(nl)}`).join(nl + nl)}${nl}`;
+
+  // const featuresList = features.length === 0
+  //   ? ''
+  //   : `${nl}*_Patches released_*${nl}${features.map(t => `\t- ${t.name} ${`[${t.labels[0].name}]` || ''}`).join(nl)}${nl}`;
+
+  const report = `*Report Sprint ${num} - ${moment().format('DD/MM/YYYY')}*${nl}`
+    + nl
+    + `_*Sprint Goal:* ${goal}_${nl}`
+    + `\`\`\`${nl}`
+    + ` _____ ______ ______ _____ ${nl}`
+    + `| Day | Goal | Done | Odd |${nl}`
+    + `|-----|------|------|-----|${nl}`
+    + `${table.map((row) => `| ${row[0]}°  | ${row[1].padEnd(4, ' ')} | ${row[2].padEnd(4, ' ')} | ${row[3].padEnd(3, ' ')} |`).join(nl)}${nl}`
+    + `|_____|______|______|_____|${nl}`
+    + `\`\`\`${nl}`
+    + `> ${table[table.length - 1][4]}${nl}`
+    + doneList
+    + bugsList
+    + nl;
+  return report;
+}
+
+function buildReport(sprintNumber, advanceTitle, matrix, doneTickets, date) {
+  const lastDayDoneTickets = doneTickets.filter((t) => t.day.isAfter(date));
+  const bugTickets = lastDayDoneTickets
+    .filter((t) => t.labels.some(l => l.name === 'Bug fix') && !t.isTimebox)
+    .reduce((res, t) => {
+      const sortedLabels = t.labels
+        .filter(l => l.name !== 'Defect' && l.name !== 'Bug fix')
+        .sort((a, b) => a.name > b.name);
+      if (res[sortedLabels[0].name]) res[sortedLabels[0].name].push(t.name);
+      else res[sortedLabels[0].name] = [t.name]
+      return res;
+    }, {});
+  // const defectTickets = lastDayDoneTickets.filter((t) => t.labels.some(l => l.name === 'Defect') && !t.isTimebox);
+  const featuresTickets = lastDayDoneTickets.filter((t) => t.labels.every(l => l.name !== 'Bug fix') && !t.isTimebox);
+  const lastDonePerLabel = featuresTickets
+    .reduce((res, t) => {
+      const sortedLabels = t.labels
+        .filter(l => l.name !== 'Defect')
+        .sort((a, b) => a.name > b.name);
+      if (res[sortedLabels[0].name]) res[sortedLabels[0].name].push(t.name);
+      else res[sortedLabels[0].name] = [t.name]
+      return res;
+    }, {});
+  return fillReport(sprintNumber, advanceTitle, matrix, lastDonePerLabel, bugTickets);
+}
+
 
 async function analyze(boardId) {
   const board = await Trello.get(
@@ -150,6 +208,7 @@ async function analyze(boardId) {
   const burndownPoints = [];
   let advanceTitle = 'Sprint Burndown';
   let hook;
+  let report;
   try {
     const sprintConfigCard = getSprintsConfig(cards)
       .find((c) => listsMap[c.idList] === lastDoneList);
@@ -157,30 +216,55 @@ async function analyze(boardId) {
 
     if (hasSprintConfigs) {
       const conf = formatConfigCard(sprintConfigCard);
+      const matrix = [];
       advanceTitle = conf.title || advanceTitle;
       hook = conf.hook;
+      let lastOdd;
       for (let index = 0; index <= conf.days; index += 1) {
+        let oddCell = '';
+        let lastDayPoints;
         const xDay = moment(conf.start).add(index, 'days');
+        const dayGoal = Math.round(conf.devs.slice(0, index).reduce((a, v) => a + (v * conf.speed), 0));
         burndownGoal.push({
           x: xDay.format('MM/DD/YYYY'),
-          y: conf.goal - conf.devs.slice(0, index).reduce((a, v) => a + (v * conf.speed), 0),
+          y: conf.goal - dayGoal,
         });
         if (moment().isAfter(xDay)) {
           const pointsCheck = index === conf.days
             ? (day) => day.isAfter(conf.start)
             : (day) => day.isAfter(conf.start) && day.isBefore(moment(conf.start).add(index, 'days'));
+          lastDayPoints = Math.round(aggregatedPerList[lastDoneList].reduce(
+            (sum, t) => pointsCheck(t.day) ? sum + t.points : sum,
+            0,
+          ));
           burndownPoints.push({
             x: xDay.format('MM/DD/YYYY'),
-            y: conf.goal - aggregatedPerList[lastDoneList].reduce(
-              (sum, t) => pointsCheck(t.day) ? sum + t.points : sum,
-              0,
-            ),
+            y: Math.round(conf.goal - lastDayPoints),
           });
+          const odd = Math.round(lastDayPoints - dayGoal);
+          oddCell = `${odd >= 0 ? `+${odd}` : odd}`;
+          lastOdd = odd > 0 ? 'On Time!' : 'Late...'
         }
+        matrix.push([
+          `${index + 1}`,
+          `${dayGoal}`,
+          `${isNaN(lastDayPoints) ? '' : lastDayPoints}`,
+          oddCell,
+          lastOdd,
+        ]);
       }
+
+      const lastWorkingDay = getPreviousWorkday().subtract(2, 'days').hours(9).minutes(15)
+      report = buildReport(
+        getListNumber(lastDoneList),
+        advanceTitle,
+        matrix,
+        aggregatedPerList[lastDoneList],
+        lastWorkingDay,
+      );
     }
   } catch (e) {
-    console.log(e);
+    console.error(e);
     hasSprintConfigs = false;
   }
 
@@ -218,6 +302,7 @@ async function analyze(boardId) {
     }],
     advanceTitle,
     hook,
+    report,
   
     topicsSeries: [{ data: Object.values(sprintLabels) }],
     topicsLabels: Object.keys(sprintLabels),
