@@ -90,7 +90,7 @@ export default {
 
 .box {
   height: 100%;
-  background-color: #2B2D3E;
+  background-color: #2B2D00;
   padding: 0;
 }
 
