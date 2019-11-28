@@ -239,7 +239,7 @@ async function analyze(boardId) {
         if (moment().isAfter(xDay)) {
           const pointsCheck = index === conf.days
             ? (day) => day.isAfter(conf.start)
-            : (day) => day.isAfter(conf.start) && day.isBefore(moment(conf.start).add(index, 'days'));
+            : (day) => day.isAfter(conf.start) && day.isBefore(moment(conf.start).add(index, 'days').minutes(30));
           lastDayPoints = Math.round(aggregatedPerList[lastDoneList].reduce(
             (sum, t) => pointsCheck(t.day) ? sum + t.points : sum,
             0,
@@ -262,7 +262,7 @@ async function analyze(boardId) {
       }
 
       try {
-        const lastWorkingDay = getPreviousWorkday().subtract(2, 'days').hours(9).minutes(15)
+        const lastWorkingDay = getPreviousWorkday().subtract(2, 'days').hours(9).minutes(30)
         report = buildReport(
           getListNumber(lastDoneList),
           advanceTitle,
