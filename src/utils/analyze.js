@@ -254,14 +254,20 @@ async function analyze(boardId) {
         ]);
       }
 
-      const lastWorkingDay = getPreviousWorkday().subtract(2, 'days').hours(9).minutes(15)
-      report = buildReport(
-        getListNumber(lastDoneList),
-        advanceTitle,
-        matrix,
-        aggregatedPerList[lastDoneList],
-        lastWorkingDay,
-      );
+      try {
+        const lastWorkingDay = getPreviousWorkday().subtract(2, 'days').hours(9).minutes(15)
+        report = buildReport(
+          getListNumber(lastDoneList),
+          advanceTitle,
+          matrix,
+          aggregatedPerList[lastDoneList],
+          lastWorkingDay,
+        );
+      } catch (e) {
+        console.error(e);
+        hook = null;
+        report = null;
+      }
     }
   } catch (e) {
     console.error(e);
