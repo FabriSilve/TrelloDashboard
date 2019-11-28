@@ -12,7 +12,7 @@ const formatCards = (cards, listsMap) => cards
     ) throw new Error('Bad formatted Card!');
     const cardPoints = extractPoints(card.name);
     const cardCleanedName = extractName(card.name);
-    const isTimebox = card.name.includes('Timebox');
+    const isTimebox = card.name.toLowerCase().includes('timebox');
     const formattedLabels = card.labels && card.labels.length
       ? card.labels.map(({ name, color }) => ({ name, color }))
       : [];
