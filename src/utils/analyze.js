@@ -83,7 +83,6 @@ function getSprintsConfig(cards) {
 
 function fillReport(num, goal, table, features, bugs) {
   const nl = '\n';
-  console.log(bugs)
   const bugsList = Object.keys(bugs).length === 0
     ? ''
     : `${nl}*_Bug fixed_*${nl}`
