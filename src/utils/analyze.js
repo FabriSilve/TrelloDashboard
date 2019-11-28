@@ -83,11 +83,12 @@ function getSprintsConfig(cards) {
 
 function fillReport(num, goal, table, features, bugs) {
   const nl = '\n';
-  const bugsList = bugs.length === 0
+  console.log(bugs)
+  const bugsList = Object.keys(bugs).length === 0
     ? ''
     : `${nl}*_Bug fixed_*${nl}`
     + `${Object.keys(bugs).map(k => `> _${k}_${nl}${bugs[k].map(t => `- ${t}`).join(nl)}`).join(nl + nl)}${nl}`;
-  const doneList = Object.keys(features) === 0
+  const doneList = Object.keys(features).length === 0
     ? ''
     : `${nl}*_Patches released_*${nl}`
       + `${Object.keys(features).map(k => `> _${k}_${nl}${features[k].map(t => `- ${t}`).join(nl)}`).join(nl + nl)}${nl}`;
@@ -121,8 +122,11 @@ function buildReport(sprintNumber, advanceTitle, matrix, doneTickets, date) {
       const sortedLabels = t.labels
         .filter(l => l.name !== 'Defect' && l.name !== 'Bug fix')
         .sort((a, b) => a.name > b.name);
-      if (res[sortedLabels[0].name]) res[sortedLabels[0].name].push(t.name);
-      else res[sortedLabels[0].name] = [t.name]
+      const label = sortedLabels[0]
+        ? sortedLabels[0].name
+        : 'general';
+      if (res[label]) res[label].push(t.name);
+      else res[label] = [t.name]
       return res;
     }, {});
   // const defectTickets = lastDayDoneTickets.filter((t) => t.labels.some(l => l.name === 'Defect') && !t.isTimebox);
@@ -132,8 +136,11 @@ function buildReport(sprintNumber, advanceTitle, matrix, doneTickets, date) {
       const sortedLabels = t.labels
         .filter(l => l.name !== 'Defect')
         .sort((a, b) => a.name > b.name);
-      if (res[sortedLabels[0].name]) res[sortedLabels[0].name].push(t.name);
-      else res[sortedLabels[0].name] = [t.name]
+      const label = sortedLabels[0]
+        ? sortedLabels[0].name
+        : 'general';
+      if (res[label]) res[label].push(t.name);
+      else res[label] = [t.name]
       return res;
     }, {});
   return fillReport(sprintNumber, advanceTitle, matrix, lastDonePerLabel, bugTickets);
